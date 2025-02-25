@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { LoginAnimation, LoginLogo } from "~/image";
 import LoginForm from "../molecule/login/loginForm";
 
 const AnimatedBackground = () => {
   const [windowWidth, setWindowWidth] = useState<number | undefined>(undefined);
-  
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setWindowWidth(window.innerWidth);
-    }
-  }, []);
 
   if (windowWidth === undefined) return null; 
 
