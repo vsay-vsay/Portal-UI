@@ -12,15 +12,11 @@ const THEMES = {
   system: "system"
 };
 
-// interface AdminNavigationProps {
-//   children: React.ReactNode;
-// }
-
-const AdminNavigation = ({children}) => {
+const AdminNavigation = ({children, activeItem: initialActiveItem}) => {
   const [theme, setTheme] = useState(THEMES.system);
   const [isOpen, setIsOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeItem, setActiveItem] = useState("dashboard");
+  const [activeItem, setActiveItem] = useState(initialActiveItem || "dashboard");
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
@@ -72,13 +68,13 @@ const AdminNavigation = ({children}) => {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900`}>
+    <div className={`min-h-screen dark:bg-gray-900`}>
       <div className="flex transition-colors duration-300">
         <div
           className={`${isOpen ? "w-60" : "w-20"} ${isMobile && !isOpen ? "-translate-x-full" : ""}
             fixed left-0 h-full bg-white dark:bg-gray-800 shadow-lg transition-all duration-300 z-30`}
         >
-          <div className="flex items-center justify-between p-4 border-b border-indigo-700 dark:border-gray-700">
+          <div className="flex items-center justify-between p-4 border-b border-blue-700 dark:border-gray-700">
             <div className="flex items-center">
               <img
                 src={LoginLogo}
@@ -90,7 +86,7 @@ const AdminNavigation = ({children}) => {
             {!isMobile && (
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="absolute -right-3 top-12 p-1.5 rounded-full bg-gray-200 dark:bg-gray-800 dark:text-white text-black shadow-lg hover:bg-indigo-400 dark:hover:bg-gray-700 transition-colors"
+                className="absolute -right-3 top-12 p-1.5 rounded-full bg-gray-200 dark:bg-gray-800 dark:text-white text-black shadow-lg hover:bg-blue-200 dark:hover:bg-gray-700 transition-colors"
               >
                 {isOpen ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
               </button>
@@ -105,9 +101,11 @@ const AdminNavigation = ({children}) => {
                     setActiveItem(item.id);
                     navigate(item.path);
                   }}
-                  className={`w-full flex items-center px-4 py-3 ${isOpen ? "justify-start" : "justify-center"}
-                  ${activeItem === item.id ? "bg-indigo-500 text-white dark:text-gray-800 rounded-2xl" : "dark:text-gray-100 text-gray-800 hover:bg-indigo-300 hover:text-gray-50 hover:dark:text-gray-800 rounded-2xl"}
-                  transition-all duration-200`}
+                  // className={`w-full flex items-center px-4 py-3 ${isOpen ? "justify-start" : "justify-center"}
+                  // ${activeItem === item.id ? "bg-blue-200 text-blue-700 text-white dark:text-gray-800 rounded-2xl" : "dark:text-gray-100 text-gray-800 hover:bg-indigo-300 hover:text-gray-50 hover:dark:text-gray-800 rounded-2xl"}
+                  // transition-all duration-200`}
+                  className={`w-full flex items-center px-4 py-3 rounded-lg ${isOpen ? "justify-start" : "justify-center"}
+                  ${activeItem === item.id ? "bg-blue-200 text-blue-700" : "hover:bg-gray-100 dark:hover:bg-gray-700"}`}
                 >
                   {React.createElement(iconMap[item.icon] || FiHome, { size: 24 })}
                   {isOpen && <span className="ml-4">{item.label}</span>}
@@ -118,9 +116,6 @@ const AdminNavigation = ({children}) => {
             )}
           </nav>
         </div>
-        {/* <div className={`flex-1 ${isOpen ? "ml-64" : "ml-20"} p-6 mt-5 transition-all duration-300`}> 
-          {children}
-      </div> */}
 
         <div className={`flex-1 ${isOpen ? "ml-64" : "ml-20"} transition-all duration-300`}>
           <header className="fixed top-0 right-0 z-20 flex items-center justify-between h-16 px-4 bg-white dark:bg-gray-800 shadow-md"
@@ -195,4 +190,3 @@ const AdminNavigation = ({children}) => {
 };
 
 export default AdminNavigation;
-
