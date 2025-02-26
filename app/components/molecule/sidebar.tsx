@@ -4,7 +4,6 @@ import { BiCaretDown } from "react-icons/bi";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { LoginLogo } from "../../image/index";
 import { useNavigate } from "react-router";
-import axios from "axios";
 
 const THEMES = {
   light: "light",
@@ -12,14 +11,13 @@ const THEMES = {
   system: "system"
 };
 
-const AdminNavigation = ({children, activeItem: initialActiveItem}) => {
+const AdminNavigation = ({children, activeItem: initialActiveItem, menuItems =[] }) => {
   const [theme, setTheme] = useState(THEMES.system);
   const [isOpen, setIsOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [activeItem, setActiveItem] = useState(initialActiveItem || "dashboard");
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState([]);
 
   const iconMap = {
     FiHome: FiHome,
@@ -29,12 +27,6 @@ const AdminNavigation = ({children, activeItem: initialActiveItem}) => {
     FiSettings: FiSettings,
     FiLogOut: FiLogOut
   };
-
-  useEffect(() => {
-    axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/menu`)
-      .then((response) => setMenuItems(response.data))
-      .catch((error) => console.error("Error fetching menu items:", error));
-  }, []);
 
   const navigate = useNavigate();
 
