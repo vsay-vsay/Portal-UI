@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-export default function InventoryDashboard() {
+export default function EmpDashboard() {
   const [date, setDate] = useState(new Date());
   const [events, setEvents] = useState([]);
   const [time, setTime] = useState(new Date());

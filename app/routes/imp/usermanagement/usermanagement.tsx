@@ -2,7 +2,7 @@ import axios from "axios";
 import type { Route } from "../+types/home";
 import AdminNavigation from "~/components/molecule/sidebar";
 import TabsComponent from "~/components/molecule/tab/tabnav";
-import UserManagement from "~/components/templete/emp/usermanagement/usermanagement";
+import UserManagement from "~/components/templete/imp/usermanagement/usermanagement";
 import { useEffect, useState } from "react";
 
 export function meta({}: Route.MetaArgs) {
