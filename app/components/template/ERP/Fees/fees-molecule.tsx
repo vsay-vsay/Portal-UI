@@ -19,6 +19,7 @@ import { FeeAlertDelete } from "./fees-alert-delete"
 import { FeePaymentDrawer } from "./fees-payment"
 import { FeeReceiptDialog } from "./fees-receipt"
 import { fetchFeesData } from "./api"
+import { getFees } from "~/routes/ERP/Fees/api"
 
 // Types
 interface Fee {
@@ -101,6 +102,8 @@ const ERPFeesMolecule = () => {
     const fetchData = async () => {
       try {
         setLoading(true)
+       const fees = await getFees()
+
         // In a real app, you would pass the user role to filter data accordingly
         const { success, data, error } = await fetchFeesData(currentUser.role, currentUser._id)
         if (success && data) {

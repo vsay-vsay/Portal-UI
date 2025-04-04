@@ -10,6 +10,7 @@ export default [
     route("erp/accountant-dashboard", "routes/ERP/Dashboard/accuntant-dashboard.tsx"),
     route("erp/user-management", "routes/ERP/UserManagement/usermanagement.tsx"),
     // route("erp/user-management/:id", "routes/ERP/UserManagement/userdetailspage.tsx"),
+    route("erp/attendance-management", "routes/ERP/Attendance/attendance.tsx"),
     route("erp/events", "routes/ERP/Events/events.tsx"),
     route("erp/timetable", "routes/ERP/Timetable/timetable.tsx"),
     route("erp/payroll", "routes/ERP/Payroll/payroll.tsx"),
