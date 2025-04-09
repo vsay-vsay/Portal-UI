@@ -14,12 +14,13 @@ import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs"
 import { Badge } from "~/components/ui/badge"
 import { Progress } from "~/components/ui/progress"
 import { CreateFeeForm } from "./fees-creation-form"
-import { FeeEditDrawer } from "./fees-edit"
+// import { FeeEditDrawer } from "./fees-edit"
 import { FeeAlertDelete } from "./fees-alert-delete"
-import { FeePaymentDrawer } from "./fees-payment"
+// import { FeePaymentDrawer } from "./fees-payment"
+// import { FeeReceiptDialog } from "./fees-receipt"
+import { fetchFees } from "./api"
+import { IndianRupee } from "lucide-react"
 import { FeeReceiptDialog } from "./fees-receipt"
-import { fetchFeesData } from "./api"
-import { getFees } from "~/routes/ERP/Fees/api"
 
 // Types
 interface Fee {
@@ -79,7 +80,7 @@ const getStatusColor = (status: string) => {
 
 
 const ERPFeesMolecule = () => {
-  const [data, setData] = useState<Fee[]>([])
+  const [data, setData] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -105,7 +106,7 @@ const ERPFeesMolecule = () => {
        const fees = await getFees()
 
         // In a real app, you would pass the user role to filter data accordingly
-        const { success, data, error } = await fetchFeesData(currentUser.role, currentUser._id)
+        const { success, data, error } = await fetchFees()
         if (success && data) {
           setData(data)
         } else {
@@ -141,7 +142,8 @@ const ERPFeesMolecule = () => {
   }
 
   const filteredData = useMemo(() => {
-    let filtered = data.filter((fee) => {
+    if (!Array.isArray(data)) return []
+    let filtered = data?.filter((fee) => {
       const nameMatch = fee.studentName.toLowerCase().includes(searchTerm.toLowerCase())
       const typeMatch = fee.feeType.toLowerCase().includes(searchTerm.toLowerCase())
       const classMatch = fee.class.toLowerCase().includes(searchTerm.toLowerCase())
@@ -155,7 +157,7 @@ const ERPFeesMolecule = () => {
         (fee) => fee.status === "pending" || fee.status === "overdue" || fee.status === "partial",
       )
     } else if (currentView === "paid") {
-      filtered = filtered.filter((fee) => fee.status === "paid")
+      filtered = filtered?.filter((fee) => fee.status === "paid")
     }
 
     // Filter by period
@@ -205,7 +207,7 @@ const ERPFeesMolecule = () => {
   }, [filteredData])
 
   const formatCurrency = (amount: number) => {
-    return `$${amount.toFixed(2)}`
+    return `₹${amount?.toFixed(2)}`
   }
   if (loading) {
     return <div className="p-4">Loading fees information...</div>
@@ -226,7 +228,7 @@ const ERPFeesMolecule = () => {
   )
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-lg border">
+    <div className="p-6">
       <div className="sm:flex sm:items-center sm:justify-between mb-4">
         <div className="sm:mt-0 flex inline-flex items-center gap-2">
           {currentUser.role === "admin" && (
@@ -276,6 +278,8 @@ const ERPFeesMolecule = () => {
         </div>
       </div>
 
+
+
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <Card>
@@ -301,7 +305,7 @@ const ERPFeesMolecule = () => {
           <CardContent>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span>{((totalPaid / (totalFees || 1)) * 100).toFixed(1)}%</span>
+                <span>{((totalPaid / (totalFees || 1)) * 100)?.toFixed(1)}%</span>
                 <span>
                   {formatCurrency(totalPaid)} / {formatCurrency(totalFees)}
                 </span>
@@ -312,11 +316,11 @@ const ERPFeesMolecule = () => {
         </Card>
       </div>
 
-      {filteredData.length === 0 ? (
+      {data?.data.length === 0 ? (
         <EmptyState />
       ) : (
         <div className="space-y-4">
-          {filteredData.map((fee) => (
+          {data?.data.map((fee) => (
             <FeeCard
               key={fee._id}
               fee={fee}
@@ -372,7 +376,7 @@ const FeeCard = ({
   onReceipt: () => void
 }) => {
   // Calculate total paid amount
-  const totalPaid = fee.paymentHistory.reduce((sum, payment) => sum + payment.amount, 0)
+  const totalPaid = fee?.paymentStatus
   const isPaid = fee.status === "paid"
   const isPartial = fee.status === "partial"
   const isOverdue = fee.status === "overdue"
@@ -399,12 +403,12 @@ const FeeCard = ({
           <div>
             <CardTitle className="text-lg">{fee.feeType}</CardTitle>
             <div className="text-sm text-muted-foreground">
-              {fee.studentName} - {fee.class}
+              {fee?.students?.name} - {fee?.class?.name}
             </div>
           </div>
           <div className="flex space-x-2 items-center">
             <Badge className={getStatusColor(fee.status)}>
-              {fee.status.charAt(0).toUpperCase() + fee.status.slice(1)}
+              {fee.paymentStatus.charAt(0).toUpperCase() + fee.paymentStatus.slice(1)}
             </Badge>
             {userRole === "admin" && (
               <DropdownMenu>
@@ -443,9 +447,9 @@ const FeeCard = ({
       <CardContent>
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div className="flex items-center">
-            <FiDollarSign className="mr-2 h-4 w-4 text-muted-foreground" />
+            <IndianRupee className="mr-2 h-4 w-4 text-muted-foreground" />
             <span>
-              Amount: <span className="font-semibold">${fee.amount.toFixed(2)}</span>
+              Amount: <span className="font-semibold">{fee.amount?.toFixed(2)}</span>
             </span>
           </div>
           <div className="flex items-center">
@@ -458,7 +462,7 @@ const FeeCard = ({
               <div className="flex justify-between text-sm mb-1">
                 <span>Payment Progress:</span>
                 <span>
-                  {totalPaid.toFixed(2)} / {fee.amount.toFixed(2)}
+                  {totalPaid?.toFixed(2)} / {fee.amount?.toFixed(2)}
                 </span>
               </div>
               <Progress value={(totalPaid / fee.amount) * 100} className="h-2" />

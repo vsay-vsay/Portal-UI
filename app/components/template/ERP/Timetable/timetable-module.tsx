@@ -1,30 +1,27 @@
-import ERPEventsMolecule from "~/components/molecule/ERP/Events/eventsTab"
+import ERPTimetableMolecule from "~/components/molecule/ERP/TimeTable/eventsTab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
 import { ToastProvider } from "~/components/ui/toast-container"
-import ERPTimetableMolecule from "./timetable/timetable-molecule"
 
 
-export default function ERPTimetableTemplete() {
+export default function ERPTimeTable() {
     return (
         <>
-            <Tabs defaultValue="teacher" className="">
+            <Tabs defaultValue="student" className="">
                 <TabsList className="ml-6">
-                    <TabsTrigger value="teacher">Teachers</TabsTrigger>
-                    <TabsTrigger value="class">Classes</TabsTrigger>
+                    <TabsTrigger value="student">Student</TabsTrigger>
+                    <TabsTrigger value="teacher">Teacher</TabsTrigger>
                 </TabsList>
+                <TabsContent value="student">
+                <ToastProvider>
+                   <ERPTimetableMolecule />
+                </ToastProvider>
+                </TabsContent>
                 <TabsContent value="teacher">
                 <ToastProvider>
                    <ERPTimetableMolecule />
                 </ToastProvider>
                 </TabsContent>
-                <TabsContent value="class">
-                <ToastProvider>
-                   <ERPTimetableMolecule />
-                </ToastProvider>
-                </TabsContent>
             </Tabs>
-
-            
         </>
     )
 }

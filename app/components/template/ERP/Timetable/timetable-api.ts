@@ -1,5 +1,4 @@
-// Mock API functions for timetable management
-// In a real application, these would make actual API calls to your backend
+// Timetable API functions
 
 // Mock data
 const mockTimetableData = [

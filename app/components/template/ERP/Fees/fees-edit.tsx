@@ -15,7 +15,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select"
 import { Input } from "~/components/ui/input"
-import { updateFeeRecord } from "./api"
+import { updateFee } from "./api"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "~/components/ui/dialog"
 
 const formSchema = z.object({
@@ -78,7 +78,7 @@ export function FeeEditDrawer({ open, onOpenChange, feeData, onSuccess }: FeeEdi
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const { success, error } = await updateFeeRecord(feeData._id, values)
+      const { success, error } = await updateFee(feeData._id, values)
       if (success) {
         onOpenChange(false)
         onSuccess()
@@ -174,7 +174,7 @@ export function FeeEditDrawer({ open, onOpenChange, feeData, onSuccess }: FeeEdi
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Amount ($)</FormLabel>
+                      <FormLabel>Amount (₹)</FormLabel>
                       <FormControl>
                         <Input type="number" step="0.01" min="0" {...field} />
                       </FormControl>
