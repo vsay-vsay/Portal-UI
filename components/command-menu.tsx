@@ -1,5 +1,6 @@
-import React from 'react'
-import { useNavigate } from '@tanstack/react-router'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import {
   IconArrowRightDashed,
   IconDeviceLaptop,
@@ -17,13 +18,19 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command'
-import { sidebarData } from './layout/data/sidebar-data'
 import { ScrollArea } from './ui/scroll-area'
+import { useRouter } from 'next/navigation'
+import { getSidebarData } from './layout/data/sidebar-data' // ✅ Import dynamic function
 
 export function CommandMenu() {
-  const navigate = useNavigate()
+  const navigate = useRouter()
   const { setTheme } = useTheme()
   const { open, setOpen } = useSearch()
+  const [sidebarData, setSidebarData] = useState(getSidebarData())
+
+  useEffect(() => {
+    setSidebarData(getSidebarData())
+  }, [])
 
   const runCommand = React.useCallback(
     (command: () => unknown) => {
@@ -39,7 +46,7 @@ export function CommandMenu() {
       <CommandList>
         <ScrollArea type='hover' className='h-72 pr-1'>
           <CommandEmpty>No results found.</CommandEmpty>
-          {sidebarData.navGroups.map((group) => (
+          {sidebarData?.navGroups.map((group) => (
             <CommandGroup key={group.title} heading={group.title}>
               {group.items.map((navItem, i) => {
                 if (navItem.url)
@@ -48,7 +55,7 @@ export function CommandMenu() {
                       key={`${navItem.url}-${i}`}
                       value={navItem.title}
                       onSelect={() => {
-                        runCommand(() => navigate({ to: navItem.url }))
+                        runCommand(() => navigate.push(navItem.url))
                       }}
                     >
                       <div className='mr-2 flex h-4 w-4 items-center justify-center'>
@@ -58,12 +65,12 @@ export function CommandMenu() {
                     </CommandItem>
                   )
 
-                return navItem.items?.map((subItem, i) => (
+                return navItem.items?.map((subItem, j) => (
                   <CommandItem
-                    key={`${subItem.url}-${i}`}
+                    key={`${subItem.url}-${j}`}
                     value={subItem.title}
                     onSelect={() => {
-                      runCommand(() => navigate({ to: subItem.url }))
+                      runCommand(() => navigate.push(subItem.url))
                     }}
                   >
                     <div className='mr-2 flex h-4 w-4 items-center justify-center'>
@@ -78,7 +85,8 @@ export function CommandMenu() {
           <CommandSeparator />
           <CommandGroup heading='Theme'>
             <CommandItem onSelect={() => runCommand(() => setTheme('light'))}>
-              <IconSun /> <span>Light</span>
+              <IconSun />
+              <span>Light</span>
             </CommandItem>
             <CommandItem onSelect={() => runCommand(() => setTheme('dark'))}>
               <IconMoon className='scale-90' />

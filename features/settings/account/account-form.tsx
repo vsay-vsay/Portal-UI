@@ -1,7 +1,8 @@
+"use client";
 import { z } from 'zod'
 import { format } from 'date-fns'
 import { useForm } from 'react-hook-form'
-import { CalendarIcon, CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
+// import { CalendarIcon, CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { cn } from '@/lib/utils'
 import { showSubmittedData } from '@/utils/show-submitted-data'
@@ -30,6 +31,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Calendar1Icon, CheckIcon } from 'lucide-react'
 
 const languages = [
   { label: 'English', value: 'en' },
@@ -118,7 +120,7 @@ export function AccountForm() {
                       ) : (
                         <span>Pick a date</span>
                       )}
-                      <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                      <Calendar1Icon className='ml-auto h-4 w-4 opacity-50' />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -162,7 +164,7 @@ export function AccountForm() {
                             (language) => language.value === field.value
                           )?.label
                         : 'Select language'}
-                      <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                      {/* <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' /> */}
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
