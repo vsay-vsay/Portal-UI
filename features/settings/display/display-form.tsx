@@ -1,3 +1,4 @@
+"use client";
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -86,7 +87,7 @@ export function DisplayForm() {
                     return (
                       <FormItem
                         key={item.id}
-                        className='flex flex-row items-start space-y-0 space-x-3'
+                        className='flex flex-row items-start space-y-0 space-x-4'
                       >
                         <FormControl>
                           <Checkbox

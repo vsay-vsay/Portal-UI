@@ -71,7 +71,7 @@ export default function SidebarNav({
           {items.map((item) => (
             <Link
               key={item.href}
-              href={`/erp/${item.href}`}
+              href={item.href}
               className={cn(
                 buttonVariants({ variant: 'ghost' }),
                 pathname === item.href

@@ -29,10 +29,8 @@ export default function RootLayout({
           enableSystem
           themes={["light", "dark", "blue", "green", "purple"]}
         >
-         
-                
-                {children}
-
+          {" "}
+          {children}
           <Toaster />
         </ThemeProvider>
       </body>
