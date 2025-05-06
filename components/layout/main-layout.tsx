@@ -15,10 +15,7 @@ const defaultOpen = true
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
     <div className="flex h-screen overflow-hidden">
-    
-      
         <AppSidebar />
-    
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <main
