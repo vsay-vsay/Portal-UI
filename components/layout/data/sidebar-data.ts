@@ -116,6 +116,7 @@ import {
   FolderX,
   FolderCheck,
   FolderSymlink,
+  LucideIceCreamCone,
 } from "lucide-react"
 
 import type { SidebarData } from "../types"
@@ -146,6 +147,15 @@ export const getSidebarData = (): SidebarData => {
         logo: Command,
         plan: "Free",
       },
+    ],
+  }
+
+
+  const navgroupCommon={
+    title: "Other",
+    items: [
+      { title: "Security", url: "/erp/security", icon: IconShieldLock },
+      { title: "Licence", url: "/erp/licence", icon: LucideIceCreamCone },
     ],
   }
 
@@ -259,6 +269,7 @@ export const getSidebarData = (): SidebarData => {
               { title: "Help & Support", url: "/erp/help", icon: HelpCircle },
             ],
           },
+         navgroupCommon,
         ],
       }
 
@@ -324,6 +335,7 @@ export const getSidebarData = (): SidebarData => {
               { title: "Help & Support", url: "/erp/teacher-help", icon: HelpCircle },
             ],
           },
+         navgroupCommon,
         ],
       }
 
@@ -392,6 +404,7 @@ export const getSidebarData = (): SidebarData => {
               { title: "Help & Support", url: "/erp/student-help", icon: HelpCircle },
             ],
           },
+         navgroupCommon
         ],
       }
 
@@ -473,6 +486,7 @@ export const getSidebarData = (): SidebarData => {
               { title: "Help & Support", url: "/erp/accountant-help", icon: IconHelp },
             ],
           },
+        navgroupCommon,
         ],
       }
 
@@ -541,6 +555,7 @@ export const getSidebarData = (): SidebarData => {
               { title: "Help & Support", url: "/erp/parent-help", icon: HelpCircle },
             ],
           },
+          navgroupCommon
         ],
       }
 
@@ -611,6 +626,7 @@ export const getSidebarData = (): SidebarData => {
               { title: "Help & Support", url: "/erp/librarian-help", icon: HelpCircle },
             ],
           },
+         navgroupCommon
         ],
       }
 
@@ -670,6 +686,7 @@ export const getSidebarData = (): SidebarData => {
               { title: "Help & Support", url: "/erp/inventory-help", icon: HelpCircle },
             ],
           },
+         navgroupCommon,
         ],
       }
 
