@@ -155,7 +155,7 @@ export const getSidebarData = (): SidebarData => {
     title: "Other",
     items: [
       { title: "Security", url: "/erp/security", icon: IconShieldLock },
-      { title: "Licence", url: "/erp/licence", icon: LucideIceCreamCone },
+      { title: "Licence", url: "/erp/licence", icon: IconLicense },
     ],
   }
 
