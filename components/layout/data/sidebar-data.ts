@@ -123,7 +123,7 @@ import type { SidebarData } from "../types"
 
 // 🧠 Function to return sidebar data based on role
 export const getSidebarData = (): SidebarData => {
-  const role = typeof window !== "undefined" ? localStorage.getItem("role") || "Accountant" : "Admin"
+  const role = typeof window !== "undefined" ? localStorage.getItem("role") || "Admin" : "Admin"
 
   const common = {
     user: {

@@ -66,8 +66,10 @@ const SidebarMenuLink = ({ item, href }: { item: NavLink; href: string }) => {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
+      
         asChild
         isActive={checkIsActive(href, item)}
+        
         tooltip={item.title}
       >
         <Link href={item.url} onClick={() => setOpenMobile(false)}>
@@ -105,7 +107,7 @@ const SidebarMenuCollapsible = ({
         </CollapsibleTrigger>
         <CollapsibleContent className='CollapsibleContent'>
           <SidebarMenuSub>
-            {item.items.map((subItem) => (
+            {item.items.map((subItem:any) => (
               <SidebarMenuSubItem key={subItem.title}>
                 <SidebarMenuSubButton
                   asChild
@@ -152,7 +154,7 @@ const SidebarMenuCollapsedDropdown = ({
             {item.title} {item.badge ? `(${item.badge})` : ''}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {item.items.map((sub) => (
+          {item.items.map((sub:any) => (
             <DropdownMenuItem key={`${sub.title}-${sub.url}`} asChild>
               <Link
                 href={sub.url}
@@ -173,9 +175,10 @@ const SidebarMenuCollapsedDropdown = ({
 }
 
 function checkIsActive(pathname: string, item: NavItem, mainNav = false) {
+  console.log('checkIsActive', pathname === item.url)
   return (
     pathname === item.url ||
-    !!item?.items?.some((i) => i.url === pathname) ||
+    !!item?.items?.some((i:any) => i.url === pathname) ||
     (mainNav &&
       pathname.split('/')[1] &&
       pathname.split('/')[1] === item?.url?.split('/')[1])
