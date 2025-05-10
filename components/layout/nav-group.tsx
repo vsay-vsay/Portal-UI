@@ -69,7 +69,7 @@ const SidebarMenuLink = ({ item, href }: { item: NavLink; href: string }) => {
       
         asChild
         isActive={checkIsActive(href, item)}
-        
+        className={`hover:bg-muted ${checkIsActive(href, item)&&'dark:bg-muted bg-primary text-white'} `}
         tooltip={item.title}
       >
         <Link href={item.url} onClick={() => setOpenMobile(false)}>
