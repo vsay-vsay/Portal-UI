@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Globe, Moon, Palette } from "lucide-react"
+import { useTheme } from "next-themes"
 
 export default function StudentSettingsPage() {
+ const {setTheme, themes, theme}= useTheme()
   return (
     <div className="container space-y-6 p-4 md:p-8">
       <PageHeader title="Settings" description="Manage your account settings and preferences" />
@@ -129,8 +131,8 @@ export default function StudentSettingsPage() {
                     <p className="text-sm text-muted-foreground">Select your preferred theme</p>
                   </div>
                 </div>
-                <Select defaultValue="system">
-                  <SelectTrigger className="w-[180px]">
+                <Select onValueChange={(value)=>setTheme(value)} defaultValue="system">
+                  <SelectTrigger  className="w-[180px]">
                     <SelectValue placeholder="Select theme" />
                   </SelectTrigger>
                   <SelectContent>

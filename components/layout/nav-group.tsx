@@ -69,7 +69,7 @@ const SidebarMenuLink = ({ item, href }: { item: NavLink; href: string }) => {
       
         asChild
         isActive={checkIsActive(href, item)}
-        className={`hover:bg-muted ${checkIsActive(href, item)&&'dark:bg-muted bg-primary text-white'} `}
+        className={`${!checkIsActive(href, item)&&'hover:bg-muted'} ${checkIsActive(href, item)&&'dark:bg-muted bg-primary text-white'} `}
         tooltip={item.title}
       >
         <Link href={item.url} onClick={() => setOpenMobile(false)}>
@@ -112,6 +112,8 @@ const SidebarMenuCollapsible = ({
                 <SidebarMenuSubButton
                   asChild
                   isActive={checkIsActive(href, subItem)}
+                  className={`${!checkIsActive(href, item)&&'hover:bg-muted'} ${checkIsActive(href, item)&&'dark:bg-muted bg-primary text-white'} `}
+
                 >
                   <Link href={subItem.url} onClick={() => setOpenMobile(false)}>
                     {subItem.icon && <subItem.icon />}
