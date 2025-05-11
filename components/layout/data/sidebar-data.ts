@@ -127,8 +127,8 @@ export const getSidebarData = (): SidebarData => {
 
   const common = {
     user: {
-      name: "kaal",
-      email: "kaal@gmail.com",
+      name: localStorage.getItem("name") || "Kaal",
+      email: localStorage.getItem("email") || "",
       avatar: "/avatars/shadcn.jpg",
     },
     teams: [
