@@ -22,8 +22,8 @@ const useRequestHook = (
     setError(null);
 
     try {
-      const token = "";
-      const domainName = "";
+      const token = localStorage.getItem("token");
+      const domainName = localStorage.getItem("domainName");
 
       let payload = customData || {};
 
