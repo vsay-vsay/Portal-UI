@@ -127,7 +127,7 @@ export function CreateTimetableForm({
 
   const onSubmit = async (data: FormValues) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = "";
       console.log("Form submitted with data:", data);
       setIsSubmitting(true);
 

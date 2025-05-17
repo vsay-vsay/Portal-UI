@@ -1,4 +1,4 @@
-"use client";
+
 
 import {
   IconBrowserCheck,
@@ -119,16 +119,17 @@ import {
   LucideIceCreamCone,
 } from "lucide-react"
 
-import type { SidebarData } from "../types"
 
 // 🧠 Function to return sidebar data based on role
-export const getSidebarData = (): SidebarData => {
-  const role = typeof window !== "undefined" ? localStorage.getItem("role") || "Admin" : "Admin"
+export const getSidebarData = (): any => {
+  const isBrowser = typeof window !== 'undefined'
+
+  const role = isBrowser ? localStorage.getItem("role") || "Admin" : "Admin"
 
   const common = {
     user: {
-      name: localStorage.getItem("name") || "Kaal",
-      email: localStorage.getItem("email") || "",
+      name: isBrowser ? localStorage.getItem("name") || "Kaal" : "Kaal",
+      email: isBrowser ? localStorage.getItem("email") || "" : "",
       avatar: "/avatars/shadcn.jpg",
     },
     teams: [
