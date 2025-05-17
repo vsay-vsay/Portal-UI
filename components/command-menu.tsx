@@ -8,7 +8,6 @@ import {
   IconSun,
 } from '@tabler/icons-react'
 import { useSearch } from '@/context/search-context'
-import { useTheme } from '@/context/theme-context'
 import {
   CommandDialog,
   CommandEmpty,
@@ -21,6 +20,7 @@ import {
 import { ScrollArea } from './ui/scroll-area'
 import { useRouter } from 'next/navigation'
 import { getSidebarData } from './layout/data/sidebar-data' // ✅ Import dynamic function
+import { useTheme } from 'next-themes'
 
 export function CommandMenu() {
   const navigate = useRouter()

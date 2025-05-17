@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoadingButton } from "@/components/ui/loading-button";
 import useRequestHook from "@/hooks/requestHook";
+import { useAuth } from "@/context/auth-context";
 
 export default function LoginForm({
   className,
@@ -15,90 +16,32 @@ export default function LoginForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [domainName, setDomainName] = useState("");
-  const navigate = useRouter();
+  const { login, domainName1 } = useAuth();
   const [loginUser, loginData, loading, error1, reset] = useRequestHook(
     "auth/login",
     "POST",
     null
   );
 
-  //   useEffect(() => {
-  //   const storedDomain = localStorage.getItem("selectedDomain");
-  //   if (storedDomain) {
-  //     setDomain(storedDomain);
-  //   } else {
-  //     navigate("/select-org"); // Redirect if no domain is set
-  //   }
-  // }, [navigate]);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    const storedRole = localStorage.getItem("role");
-    const storedDomain = localStorage.getItem("domainName");
-    const storedEmail = localStorage.getItem("email");
-    const storedName = localStorage.getItem("name");
-
-    if (
-      storedToken &&
-      storedRole &&
-      storedDomain &&
-      storedEmail &&
-      storedName
-    ) {
-      redirectUser(storedRole);
-    } else {
-      const selectedDomain = localStorage.getItem("selectedDomain");
-      if (selectedDomain) {
-        setDomainName(selectedDomain);
-      } else {
-        navigate.replace("/select-org"); // Redirect to select organization if no domain is selected
-      }
-    }
-  }, [navigate]);
-
-  // ✅ Function to Redirect User Based on Role
-  const redirectUser = (role: string) => {
-    switch (role) {
-      case "Admin":
-        navigate.replace("/erp/admin-dashboard");
-        break;
-      case "Teacher":
-        navigate.replace("/erp/teacher-dashboard");
-        break;
-      case "Student":
-        navigate.replace("/erp/student-dashboard");
-        break;
-      case "Accountant":
-        navigate.replace("/erp/accountant-dashboard");
-        break;
-      default:
-        setError("Unknown role. Please contact support.");
-    }
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    await loginUser({ email, password, domainName });
+    await loginUser({ email, password, domainName1 });
   };
 
   useEffect(() => {
-    if (loginData) {
-      if (loginData?.token) {
-        localStorage.setItem("token", loginData?.token);
-        localStorage.setItem("role", loginData?.role);
-        localStorage.setItem("domainName", loginData?.domainName);
-        localStorage.setItem("email", loginData?.email);
-        localStorage.setItem("name", loginData?.name);
-
-        redirectUser(loginData.role);
-      } else {
-        setError(loginData.message || "Login failed. Please try again.");
-      }
+    if (loginData?.token) {
+      login({
+        token: loginData.token,
+        email: loginData.email,
+        name: loginData.name,
+        role: loginData.role,
+        domainName: loginData.domainName,
+      });
+    } else if (loginData?.message) {
+      setError(loginData.message);
     }
   }, [loginData]);
-
 
   return (
     <form
@@ -127,7 +70,8 @@ export default function LoginForm({
               Change Organization?
             </a>
           </div>
-          <Input id="domainName" type="text" value={domainName} disabled />
+          <Input id="domainName1" type="text" value={domainName1} disabled />
+          
         </div>
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>

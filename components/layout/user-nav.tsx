@@ -12,12 +12,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/context/auth-context";
 
 export function UserNav() {
+ const {logout}= useAuth()
   const isBrowser = typeof window !== "undefined";
   const name = isBrowser ? localStorage.getItem("name") : "John Doe";
   const email = isBrowser ? localStorage.getItem("email") : "";
   const avatar = isBrowser ? localStorage.getItem("avatar") : "";
+
 
   return (
     <DropdownMenu>
@@ -26,7 +29,7 @@ export function UserNav() {
           <Avatar className="h-8 w-8 ">
             <AvatarImage src={avatar} alt={name} />
             <AvatarFallback className="rounded-lg">
-              {name.charAt(0)}
+              {name?.charAt(0)}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -56,7 +59,7 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={logout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
