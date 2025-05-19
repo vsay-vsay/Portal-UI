@@ -1,21 +1,17 @@
-
 "use client";
 import SelectOrgForm from "@/components/erp/auth/select-organization";
 import { useEffect, useState } from "react";
 
-
-
-
 export default function Page() {
-  const [logo, setLogo]=useState("")
-  const [loginImage, setLoginImage]=useState("")
+  const [logo, setLogo] = useState("");
+  const [loginImage, setLoginImage] = useState("");
 
-  useEffect(()=>{
-    const Logo=localStorage.getItem("logo");
-    const ImageLogo= localStorage.getItem("loginImage");
+  useEffect(() => {
+    const Logo = localStorage.getItem("logo") || "";
+    const ImageLogo = localStorage.getItem("loginImage") || "";
     setLogo(Logo);
     setLoginImage(ImageLogo);
-  },[])
+  }, []);
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -31,7 +27,7 @@ export default function Page() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <SelectOrgForm/>
+            <SelectOrgForm />
           </div>
         </div>
       </div>
@@ -43,5 +39,5 @@ export default function Page() {
         />
       </div>
     </div>
-  )
+  );
 }
