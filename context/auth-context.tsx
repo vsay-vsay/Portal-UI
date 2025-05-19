@@ -60,7 +60,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("email");
     localStorage.removeItem("name");
     localStorage.removeItem("role");
-    localStorage.removeItem("domainName");
     setUser(null);
     router.replace("/");
   };
