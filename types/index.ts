@@ -23,3 +23,12 @@ export type NavCollapsible = {
   badge?: string
   items: NavItem[]
 }
+
+
+export type Field={
+  name: string
+  label?: string
+  placeholder?: string
+  type: "text" | "email" | "number" | "password" | "textarea" | "checkbox" | "radio" | "select"
+  options?: { label: string; value: string }[]
+}

@@ -18,10 +18,10 @@ export default function Page() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <a href="#" className="flex items-center gap-2 font-medium">
-            <div className="text-primary-foreground flex size-8 items-center justify-center rounded-md">
+            {logo&&<div className="text-primary-foreground flex size-8 items-center justify-center rounded-md">
               {/* <GalleryVerticalEnd className="size-4" /> */}
-              {/* <img src={vsayPng} alt="Vsay-logo" /> */}
-            </div>
+              <img src={logo} alt="Vsay-logo" />
+            </div>}
             VSAY
           </a>
         </div>

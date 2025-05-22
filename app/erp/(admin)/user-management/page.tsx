@@ -1,11 +1,16 @@
-
-"use client"
-import { Button } from "@/components/ui/button"
-import { Plus, Search, Filter, Eye, Edit, UserPlus, Key } from "lucide-react"
-import { PageHeader } from "@/components/page-header"
-import { DataTable } from "@/components/data-table"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Plus, Search, Filter, Eye, Edit, UserPlus, Key } from "lucide-react";
+import { PageHeader } from "@/components/page-header";
+import { DataTable } from "@/components/data-table";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -14,11 +19,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Switch } from "@/components/ui/switch"
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import DialogeWrapper from "@/components/dialogeWrapper";
+import UpdateCreateForm from "@/components/erp/UserManagement/UpdateCreateForm";
 
 export default function UserManagementPage() {
   // Sample data for users
@@ -73,7 +86,7 @@ export default function UserManagementPage() {
       lastLogin: "2023-05-25 11:10 AM",
       status: "Inactive",
     },
-  ]
+  ];
 
   // Sample data for roles
   const roles = [
@@ -117,7 +130,7 @@ export default function UserManagementPage() {
       permissions: "Restricted",
       status: "Active",
     },
-  ]
+  ];
 
   // Column definitions for the users data table
   const usersColumns = [
@@ -154,16 +167,22 @@ export default function UserManagementPage() {
       header: "Status",
       accessorKey: "status",
       cell: (info: any) => {
-        const status = info.getValue()
-        let statusClass = "bg-gray-100 text-gray-800"
+        const status = info.getValue();
+        let statusClass = "bg-gray-100 text-gray-800";
 
         if (status === "Active") {
-          statusClass = "bg-green-100 text-green-800"
+          statusClass = "bg-green-100 text-green-800";
         } else if (status === "Inactive") {
-          statusClass = "bg-red-100 text-red-800"
+          statusClass = "bg-red-100 text-red-800";
         }
 
-        return <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>{status}</span>
+        return (
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}
+          >
+            {status}
+          </span>
+        );
       },
     },
     {
@@ -182,7 +201,7 @@ export default function UserManagementPage() {
         </div>
       ),
     },
-  ]
+  ];
 
   // Column definitions for the roles data table
   const rolesColumns = [
@@ -207,16 +226,22 @@ export default function UserManagementPage() {
       header: "Status",
       accessorKey: "status",
       cell: (info: any) => {
-        const status = info.getValue()
-        let statusClass = "bg-gray-100 text-gray-800"
+        const status = info.getValue();
+        let statusClass = "bg-gray-100 text-gray-800";
 
         if (status === "Active") {
-          statusClass = "bg-green-100 text-green-800"
+          statusClass = "bg-green-100 text-green-800";
         } else if (status === "Inactive") {
-          statusClass = "bg-red-100 text-red-800"
+          statusClass = "bg-red-100 text-red-800";
         }
 
-        return <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>{status}</span>
+        return (
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}
+          >
+            {status}
+          </span>
+        );
       },
     },
     {
@@ -232,7 +257,7 @@ export default function UserManagementPage() {
         </div>
       ),
     },
-  ]
+  ];
 
   return (
     <div className="space-y-6 p-6">
@@ -241,95 +266,19 @@ export default function UserManagementPage() {
         description="Manage users, roles, and permissions"
         actions={
           <div className="flex items-center gap-2">
-            <Dialog>
-              <DialogTrigger asChild>
+            <DialogeWrapper
+              title="Add New User"
+              description="Create a new user account with role and permissions"
+              TriggerButton={
                 <Button>
                   <UserPlus className="mr-2 h-4 w-4" />
                   Add User
                 </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[525px]">
-                <DialogHeader>
-                  <DialogTitle>Add New User</DialogTitle>
-                  <DialogDescription>Create a new user account with role and permissions</DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Full Name
-                    </Label>
-                    <Input id="name" placeholder="John Doe" className="col-span-3" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="username" className="text-right">
-                      Username
-                    </Label>
-                    <Input id="username" placeholder="john.doe" className="col-span-3" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="email" className="text-right">
-                      Email
-                    </Label>
-                    <Input id="email" type="email" placeholder="john.doe@example.com" className="col-span-3" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="role" className="text-right">
-                      Role
-                    </Label>
-                    <Select>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="teacher">Teacher</SelectItem>
-                        <SelectItem value="staff">Staff</SelectItem>
-                        <SelectItem value="student">Student</SelectItem>
-                        <SelectItem value="parent">Parent</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="department" className="text-right">
-                      Department
-                    </Label>
-                    <Select>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select department" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="administration">Administration</SelectItem>
-                        <SelectItem value="mathematics">Mathematics</SelectItem>
-                        <SelectItem value="science">Science</SelectItem>
-                        <SelectItem value="languages">Languages</SelectItem>
-                        <SelectItem value="socialStudies">Social Studies</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="password" className="text-right">
-                      Password
-                    </Label>
-                    <Input id="password" type="password" className="col-span-3" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="confirmPassword" className="text-right">
-                      Confirm Password
-                    </Label>
-                    <Input id="confirmPassword" type="password" className="col-span-3" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <div className="col-start-2 col-span-3 flex items-center space-x-2">
-                      <Switch id="sendEmail" />
-                      <Label htmlFor="sendEmail">Send welcome email with login details</Label>
-                    </div>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button type="submit">Create User</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+              }
+            >
+              <UpdateCreateForm />
+            </DialogeWrapper>
+
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline">
@@ -340,14 +289,20 @@ export default function UserManagementPage() {
               <DialogContent className="sm:max-w-[525px]">
                 <DialogHeader>
                   <DialogTitle>Add New Role</DialogTitle>
-                  <DialogDescription>Create a new role with specific permissions</DialogDescription>
+                  <DialogDescription>
+                    Create a new role with specific permissions
+                  </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="roleName" className="text-right">
                       Role Name
                     </Label>
-                    <Input id="roleName" placeholder="Librarian" className="col-span-3" />
+                    <Input
+                      id="roleName"
+                      placeholder="Librarian"
+                      className="col-span-3"
+                    />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="roleDescription" className="text-right">
@@ -456,7 +411,9 @@ export default function UserManagementPage() {
           <Card>
             <CardHeader>
               <CardTitle>Users</CardTitle>
-              <CardDescription>Manage all users and their access</CardDescription>
+              <CardDescription>
+                Manage all users and their access
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DataTable columns={usersColumns} data={users} />
@@ -489,7 +446,9 @@ export default function UserManagementPage() {
           <Card>
             <CardHeader>
               <CardTitle>Roles</CardTitle>
-              <CardDescription>Manage all roles and their permissions</CardDescription>
+              <CardDescription>
+                Manage all roles and their permissions
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <DataTable columns={rolesColumns} data={roles} />
@@ -498,5 +457,5 @@ export default function UserManagementPage() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
