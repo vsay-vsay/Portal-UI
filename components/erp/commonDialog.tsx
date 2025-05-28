@@ -19,7 +19,7 @@ interface CommonFormDialogProps {
   title: string;
   description: string;
   endpoint: string;
-  method: "POST" | "PUT" | "PATCH";
+  method: "POST" | "PUT" | "DELETE" | "GET";
   formComponent: React.ReactElement;
   successMessage?: string;
   defaultValues?: any;
@@ -31,7 +31,7 @@ export function CommonFormDialog({
   title,
   description,
   endpoint,
-  method = "POST",
+  method = 'POST',
   formComponent,
   successMessage = "Operation successful",
   defaultValues = null,

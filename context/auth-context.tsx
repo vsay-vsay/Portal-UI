@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [domainName1, setDomainName] = useState<string>("");
   const router = useRouter();
-
   const redirectUser = (role: string) => {
     switch (role) {
       case "Admin":

@@ -1,10 +1,10 @@
-import { Field } from "@/types";
 import React from "react";
 import { z } from "zod";
 import CommonForm from "../commonFormBuilder";
 
 const schema = z.object({
   name: z.string().min(2),
+  username: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(5),
   role: z.string({
@@ -19,6 +19,7 @@ const schema = z.object({
 
 const fields = [
   { name: "name", type: "text", label: "Full Name", placeholder: "Enter name" },
+  { name: "username", type: "text", label: "Username", placeholder: "Enter username" },
   { name: "email", type: "email", label: "Email" },
   {
     name: "password",
@@ -42,8 +43,12 @@ const fields = [
   },
 ];
 
-function UpdateCreateForm() {
-  return <CommonForm schema={schema} fields={fields} api="auth/register" mode="create" />;
+function UpdateCreateForm({
+  setOpen,
+}:{
+  setOpen?: (open: boolean) => void;
+}) {
+  return <CommonForm setOpen={setOpen} schema={schema} fields={fields} api="auth/register" mode="create" />;
 }
 
 export default UpdateCreateForm;

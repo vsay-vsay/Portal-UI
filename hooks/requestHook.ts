@@ -1,5 +1,5 @@
-"use client"
-import axios from "axios";
+"use client";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_URL;
@@ -16,10 +16,12 @@ const useRequestHook = (
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [statusCode, setStatusCode] = useState<number | null>(null);
 
   const fetchData = async (customData: any = initialData) => {
     setLoading(true);
     setError(null);
+    setStatusCode(null);
 
     try {
       const token = localStorage.getItem("token");
@@ -27,35 +29,67 @@ const useRequestHook = (
 
       let payload = customData || {};
 
-      // Add domain if required and payload is not FormData
+      // Add domainName if needed
       if (useDomain && !(payload instanceof FormData)) {
         if (!domainName) throw new Error("No domain name found");
         payload = { ...payload, domainName };
       }
 
-      // Set headers
-      const headers: any = {};
+      // Prepare headers
+      const headers: Record<string, string> = {};
       if (useToken && token) headers["Authorization"] = `Bearer ${token}`;
       if (!(payload instanceof FormData)) headers["Content-Type"] = "application/json";
 
+      // Axios request config
       const config = {
         method,
         url: `${BASE_URL}/api/${endpoint}`,
         headers,
         ...(method === "GET" || method === "DELETE"
           ? { params: payload }
-          : { data: payload }),
+          : {
+              data: {
+                product: ["erp"],
+                ...payload,
+              },
+            }),
       };
 
       const res = await axios(config);
-      setData(res.data);
+      const responseData = res.data;
+      setStatusCode(res.status);
 
-      if (res.data.code !== 200 && res.data.success !== true) {
-        throw new Error(res.data.message || "Request failed");
+      // Accept any 2xx HTTP response
+      if (res.status < 200 || res.status >= 300) {
+        throw new Error(res.statusText || "Request failed");
       }
-    } catch (err: any) {
+
+      // Optional: Check API response code or success field
+      if (
+        responseData?.success === false ||
+        (responseData?.code && (responseData.code < 200 || responseData.code >= 300))
+      ) {
+        throw new Error(responseData?.message || "Something went wrong");
+      }
+
+      setData(responseData);
+    } catch (err: unknown) {
       console.error("Request Error:", err);
-      setError(err?.message || "Unknown error occurred");
+      if (axios.isAxiosError(err)) {
+        const axiosError = err as AxiosError;
+        setStatusCode(axiosError.response?.status || 500);
+        setError(
+          axiosError.response?.data?.message ||
+          axiosError.message ||
+          "Server error"
+        );
+      } else if (err instanceof Error) {
+        setError(err.message);
+        setStatusCode(500);
+      } else {
+        setError("Unexpected error occurred");
+        setStatusCode(500);
+      }
     } finally {
       setLoading(false);
     }
@@ -64,9 +98,10 @@ const useRequestHook = (
   const reset = () => {
     setData(null);
     setError(null);
+    setStatusCode(null);
   };
 
-  return [ fetchData, data, loading, error, reset ];
+  return [fetchData, data, loading, error, reset, statusCode] as const;
 };
 
 export default useRequestHook;

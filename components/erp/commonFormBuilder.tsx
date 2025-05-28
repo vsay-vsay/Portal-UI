@@ -60,6 +60,7 @@ type Field =
     };
 
 type Props<T extends ZodTypeAny> = {
+  setOpen?: (open: boolean) => void;
   schema: T;
   fields: Field[];
   mode: Mode;
@@ -69,6 +70,7 @@ type Props<T extends ZodTypeAny> = {
 };
 
 function CommonForm<T extends ZodTypeAny>({
+  setOpen,
   schema,
   fields,
   mode,
@@ -77,7 +79,7 @@ function CommonForm<T extends ZodTypeAny>({
   submitLabel,
 }: Props<T>) {
   const method = mode === "update" ? "PUT" : "POST";
-  const [request, response, loading, error] = useRequestHook(api, method, null);
+  const [request, response, loading, error, reset] = useRequestHook(api, method, null);
 
   const { toast } = useToast();
   const form = useForm<z.infer<T>>({
@@ -101,6 +103,7 @@ function CommonForm<T extends ZodTypeAny>({
         title: response?.message,
         variant: "default",
       });
+      setOpen?.(false);
     }
   }, [response]);
 
@@ -208,7 +211,7 @@ function CommonForm<T extends ZodTypeAny>({
 
         {error && (
           <p className="text-red-500 text-sm">
-            {error.message || "Something went wrong."}
+            {error}
           </p>
         )}
       </form>

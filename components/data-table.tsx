@@ -24,8 +24,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { DataTableSkeleton } from "./data-table/data-table-skeleton"
 
 interface DataTableProps<TData, TValue> {
+  loading?: boolean
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   searchKey?: string
@@ -33,6 +35,7 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({
+  loading = false,
   columns,
   data,
   searchKey = "name",
@@ -61,6 +64,10 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   })
+
+  if (loading) {
+    return <DataTableSkeleton columnCount={5}/>
+  }
 
   return (
     <div className="w-full">

@@ -70,7 +70,9 @@ export default function LoginForm({
               Change Organization?
             </a>
           </div>
-          <Input id="domainName1" type="text" value={domainName1} disabled />
+          <div className="flex items-center justify-between rounded-md border p-2">
+            {domainName1}
+          </div>
           
         </div>
         <div className="grid gap-3">

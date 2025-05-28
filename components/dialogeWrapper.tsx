@@ -16,16 +16,20 @@ function DialogeWrapper({
   description,
   children,
   footer,
+  setOpen,
+  open 
 }: {
   TriggerButton: React.ReactNode;
   title?: string;
   description?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  setOpen: (open: boolean) => void;
+  open?: boolean;
 }) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>{TriggerButton}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger  asChild>{TriggerButton}</DialogTrigger>
       <DialogContent className="sm:max-w-[525px]">
         <DialogHeader>
           {title && <DialogTitle>{title}</DialogTitle>}

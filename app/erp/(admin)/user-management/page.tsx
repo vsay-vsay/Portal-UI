@@ -32,61 +32,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import DialogeWrapper from "@/components/dialogeWrapper";
 import UpdateCreateForm from "@/components/erp/UserManagement/UpdateCreateForm";
+import { useEffect, useState } from "react";
+import useRequestHook from "@/hooks/requestHook";
+import api from "@/utils/api";
 
 export default function UserManagementPage() {
+  const [open, setOpen] = useState(false);
+  const [fetchUsers, data, loading, error, reset , statusdata] = useRequestHook(api.USERS, "GET", null);
   // Sample data for users
-  const users = [
-    {
-      id: "USR-1001",
-      name: "John Smith",
-      username: "john.smith",
-      email: "john.s@example.com",
-      role: "Admin",
-      department: "Administration",
-      lastLogin: "2023-05-28 10:15 AM",
-      status: "Active",
-    },
-    {
-      id: "USR-1002",
-      name: "Sarah Johnson",
-      username: "sarah.johnson",
-      email: "sarah.j@example.com",
-      role: "Teacher",
-      department: "Science",
-      lastLogin: "2023-05-27 09:30 AM",
-      status: "Active",
-    },
-    {
-      id: "USR-1003",
-      name: "Michael Brown",
-      username: "michael.brown",
-      email: "michael.b@example.com",
-      role: "Teacher",
-      department: "Science",
-      lastLogin: "2023-05-26 02:45 PM",
-      status: "Active",
-    },
-    {
-      id: "USR-1004",
-      name: "Emily Davis",
-      username: "emily.davis",
-      email: "emily.d@example.com",
-      role: "Teacher",
-      department: "Languages",
-      lastLogin: "2023-05-28 08:20 AM",
-      status: "Active",
-    },
-    {
-      id: "USR-1005",
-      name: "Robert Wilson",
-      username: "robert.wilson",
-      email: "robert.w@example.com",
-      role: "Staff",
-      department: "Administration",
-      lastLogin: "2023-05-25 11:10 AM",
-      status: "Inactive",
-    },
-  ];
+  const [users, setUsers] = useState([]);
+
+  useEffect(()=>{
+    fetchUsers()
+  },[])
+
+  useEffect(() => {
+    if (data) {
+      setUsers(data?.data || []);
+    }
+  }, [data]);
+ 
 
   // Sample data for roles
   const roles = [
@@ -136,7 +101,7 @@ export default function UserManagementPage() {
   const usersColumns = [
     {
       header: "User ID",
-      accessorKey: "id",
+      accessorKey: "_id",
     },
     {
       header: "Name",
@@ -155,14 +120,14 @@ export default function UserManagementPage() {
       header: "Role",
       accessorKey: "role",
     },
-    {
-      header: "Department",
-      accessorKey: "department",
-    },
-    {
-      header: "Last Login",
-      accessorKey: "lastLogin",
-    },
+    // {
+    //   header: "Department",
+    //   accessorKey: "department",
+    // },
+    // {
+    //   header: "Last Login",
+    //   accessorKey: "lastLogin",
+    // },
     {
       header: "Status",
       accessorKey: "status",
@@ -267,16 +232,18 @@ export default function UserManagementPage() {
         actions={
           <div className="flex items-center gap-2">
             <DialogeWrapper
+              open={open}
+              setOpen={setOpen}
               title="Add New User"
               description="Create a new user account with role and permissions"
               TriggerButton={
-                <Button>
+                <Button onClick={() => setOpen(true)}>
                   <UserPlus className="mr-2 h-4 w-4" />
                   Add User
                 </Button>
               }
             >
-              <UpdateCreateForm />
+              <UpdateCreateForm setOpen={setOpen} />
             </DialogeWrapper>
 
             <Dialog>
@@ -373,7 +340,7 @@ export default function UserManagementPage() {
           <TabsTrigger value="roles">Roles & Permissions</TabsTrigger>
         </TabsList>
         <TabsContent value="users" className="space-y-4">
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 w-full max-w-sm">
               <Search className="h-4 w-4 text-gray-400" />
               <Input placeholder="Search users..." />
@@ -406,7 +373,7 @@ export default function UserManagementPage() {
                 <Filter className="h-4 w-4" />
               </Button>
             </div>
-          </div>
+          </div> */}
 
           <Card>
             <CardHeader>
@@ -416,12 +383,12 @@ export default function UserManagementPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <DataTable columns={usersColumns} data={users} />
+              <DataTable loading={loading} columns={usersColumns} data={users} />
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="roles" className="space-y-4">
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 w-full max-w-sm">
               <Search className="h-4 w-4 text-gray-400" />
               <Input placeholder="Search roles..." />
@@ -441,7 +408,7 @@ export default function UserManagementPage() {
                 <Filter className="h-4 w-4" />
               </Button>
             </div>
-          </div>
+          </div> */}
 
           <Card>
             <CardHeader>
