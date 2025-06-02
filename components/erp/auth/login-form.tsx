@@ -30,16 +30,16 @@ export default function LoginForm({
   };
 
   useEffect(() => {
-    if (loginData?.token) {
+    if (loginData?.data.token) {
       login({
-        token: loginData.token,
-        email: loginData.email,
-        name: loginData.name,
-        role: loginData.role,
-        domainName: loginData.domainName,
+        token: loginData?.data.token,
+        email: loginData?.data.email,
+        name: loginData?.data.name,
+        role: loginData?.data.role,
+        domainName: loginData?.data.domainName,
       });
-    } else if (loginData?.message) {
-      setError(loginData.message);
+    } else if (loginData?.data?.message) {
+      setError(loginData?.data.message);
     }
   }, [loginData]);
 

@@ -44,11 +44,11 @@ const SelectOrgForm = ({
 
   useEffect(() => {
     if (domainData) {
-      if (domainData?.domainName) {
-        localStorage.setItem("selectedDomain", domainData?.domainName);
-        localStorage.setItem("domainName", domainData?.domainName);
-        localStorage.setItem("logo", domainData?.logo);
-        localStorage.setItem("loginImage", domainData?.loginImage);
+      if (domainData?.data?.domainName) {
+        localStorage.setItem("selectedDomain", domainData?.data?.domainName);
+        localStorage.setItem("domainName", domainData?.data?.domainName);
+        localStorage.setItem("logo", domainData?.data?.logo);
+        localStorage.setItem("loginImage", domainData?.data?.loginImage);
 
         navigate.replace("/");
       } 
