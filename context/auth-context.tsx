@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [domainName1, setDomainName] = useState<string>("");
   const router = useRouter();
+  const [count, setCount] = useState(0);
   const redirectUser = (role: string) => {
     switch (role) {
       case "Admin":
@@ -74,7 +75,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token && email && name && role && domainName) {
       const userObj = { email, name, role, domainName, token };
       setUser(userObj);
-      redirectUser(role);
+      if (count === 0) {
+        redirectUser(role);
+        setCount(count + 1);
+      }
     } else {
       if (selectedDomain) {
         setDomainName(selectedDomain);

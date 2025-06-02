@@ -57,7 +57,9 @@ const api = {
   NOTIFICATIONS: "/api/notifications",
   NOTIFICATIONS_BY_USER: "/api/notifications/user/:id",
 
-  EVENTS: "events/all-event",
+  ALL_EVENTS: "events/all-event",
+  CREATE_EVENT: "events/create-event",
+  EVENTS: "events",
 };
 
 export default api;
