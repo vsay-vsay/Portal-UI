@@ -38,7 +38,8 @@ const useRequestHook = (
       // Prepare headers
       const headers: Record<string, string> = {};
       if (useToken && token) headers["Authorization"] = `Bearer ${token}`;
-      if (!(payload instanceof FormData)) headers["Content-Type"] = "application/json";
+      if (!(payload instanceof FormData))
+        headers["Content-Type"] = "application/json";
 
       // Axios request config
       const config = {
@@ -65,10 +66,7 @@ const useRequestHook = (
       }
 
       // Optional: Check API response code or success field
-      if (
-        responseData?.success === false ||
-        (responseData?.code && (responseData.code < 200 || responseData.code >= 300))
-      ) {
+      if (responseData?.success === false) {
         throw new Error(responseData?.message || "Something went wrong");
       }
 
@@ -80,8 +78,8 @@ const useRequestHook = (
         setStatusCode(axiosError.response?.status || 500);
         setError(
           axiosError.response?.data?.message ||
-          axiosError.message ||
-          "Server error"
+            axiosError.message ||
+            "Server error"
         );
       } else if (err instanceof Error) {
         setError(err.message);

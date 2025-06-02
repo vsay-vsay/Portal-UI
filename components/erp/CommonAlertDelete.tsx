@@ -71,8 +71,8 @@ export function CommonAlertDelet({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the <b>{title?.toLocaleUpperCase()}</b> and remove it from our
-            servers.
+            This will permanently delete the <b>{title?.toLocaleUpperCase()}</b>{" "}
+            and remove it from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

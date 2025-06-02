@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z, ZodTypeAny } from "zod";
@@ -21,9 +22,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Eye, EyeOff } from "lucide-react";
 import useRequestHook from "@/hooks/requestHook";
 import { LoadingButton } from "../ui/loading-button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 type Mode = "create" | "update";
 
@@ -60,25 +62,25 @@ type Field =
     };
 
 type Props<T extends ZodTypeAny> = {
-  setOpen: (open: boolean) => void;
-  setRefresh: (refresh: number) => void;
+  onSuccess?: () => void;
   schema: T;
   fields: Field[];
   mode: Mode;
   data?: any;
   api: string;
   submitLabel?: string;
+  transformData?: (data: z.infer<T>) => any; // New prop for data transformation
 };
 
 function CommonForm<T extends ZodTypeAny>({
-  setRefresh,
-  setOpen,
+  onSuccess,
   schema,
   fields,
   mode,
   data,
   api,
   submitLabel,
+  transformData, // New prop
 }: Props<T>) {
   const method = mode === "update" ? "PUT" : "POST";
   const [request, response, loading, error, reset] = useRequestHook(
@@ -87,11 +89,20 @@ function CommonForm<T extends ZodTypeAny>({
     null
   );
 
-  const { toast } = useToast();
+  // State to track password visibility for each password field
+  const [passwordVisibility, setPasswordVisibility] = useState<Record<string, boolean>>({});
+
   const form = useForm<z.infer<T>>({
     resolver: zodResolver(schema),
-    defaultValues: {} as z.infer<T>,
+    defaultValues: data || {},
   });
+
+  const togglePasswordVisibility = (fieldName: string) => {
+    setPasswordVisibility(prev => ({
+      ...prev,
+      [fieldName]: !prev[fieldName]
+    }));
+  };
 
   useEffect(() => {
     if (mode === "update" && data) {
@@ -100,19 +111,29 @@ function CommonForm<T extends ZodTypeAny>({
   }, [data, mode, form]);
 
   const onSubmit = async (values: z.infer<T>) => {
-    await request(values);
+    // Transform data if transformData function is provided
+    const dataToSend = transformData ? transformData(values) : values;
+    await request(dataToSend);
   };
 
   useEffect(() => {
     if (response) {
-      toast({
-        title: response?.message,
-        variant: "default",
+      toast.success(response?.message || `Successfully ${mode === 'create' ? 'created' : 'updated'}!`, {
+        position: "bottom-right"
       });
-      setOpen?.(false);
-      setRefresh((prev: number) => (prev ? prev + 1 : 1));
+      reset(); // Reset the request state after successful submission
+      form.reset(); // Reset the form after successful submission
+      if (onSuccess) {
+        onSuccess();
+      }
     }
-  }, [response]);
+
+    if (error) {
+      toast.error(error, {
+        position: "bottom-right",
+      });
+    }
+  }, [response, error, mode, onSuccess, reset, form]);
 
   return (
     <Form {...form}>
@@ -125,7 +146,13 @@ function CommonForm<T extends ZodTypeAny>({
             render={({ field: controllerField }) => (
               <FormItem>
                 {field.type !== "checkbox" && (
-                  <FormLabel>{field.label}</FormLabel>
+                  <FormLabel>
+                    {field.label}
+                    {/* Show optional indicator for update mode */}
+                    {mode === "update" && (
+                      <span className="text-gray-500 text-sm ml-1">(optional)</span>
+                    )}
+                  </FormLabel>
                 )}
                 <FormControl>
                   {(() => {
@@ -135,10 +162,37 @@ function CommonForm<T extends ZodTypeAny>({
                       case "number":
                       case "password":
                         return (
+                          
+                          field.type==="password"? <div className="relative">
+                            <Input
+                              {...controllerField}
+                              // disabled={field.type === "password" && mode === "update"}
+                              placeholder={
+                                mode === "update" && field.type === "password"
+                                  ? "Leave blank to keep current password"
+                                  : field.placeholder
+                              }
+                              type={passwordVisibility[field.name] ? "text" : "password"}
+                            />
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                              onClick={() => togglePasswordVisibility(field.name)}
+                            >
+                              {passwordVisibility[field.name] ? (
+                                <EyeOff className="h-4 w-4" />
+                              ) : (
+                                <Eye className="h-4 w-4" />
+                              )}
+                            </Button>
+                          </div>:
                           <Input
                             {...controllerField}
                             placeholder={field.placeholder}
                             type={field.type}
+                          
                           />
                         );
                       case "textarea":
@@ -155,7 +209,12 @@ function CommonForm<T extends ZodTypeAny>({
                               checked={controllerField.value}
                               onCheckedChange={controllerField.onChange}
                             />
-                            <FormLabel>{field.label}</FormLabel>
+                            <FormLabel>
+                              {field.label}
+                              {mode === "update" && (
+                                <span className="text-gray-500 text-sm ml-1">(optional)</span>
+                              )}
+                            </FormLabel>
                           </div>
                         );
                       case "radio":
@@ -185,11 +244,15 @@ function CommonForm<T extends ZodTypeAny>({
                         return (
                           <Select
                             onValueChange={controllerField.onChange}
-                            defaultValue={controllerField.value}
+                            value={controllerField.value || ""}
                           >
                             <SelectTrigger>
                               <SelectValue
-                                placeholder={field.label || "Select"}
+                                placeholder={
+                                  field.placeholder || 
+                                  field.label || 
+                                  "Select"
+                                }
                               />
                             </SelectTrigger>
                             <SelectContent>

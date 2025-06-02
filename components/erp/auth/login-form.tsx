@@ -38,8 +38,8 @@ export default function LoginForm({
         role: loginData?.data.role,
         domainName: loginData?.data.domainName,
       });
-    } else if (loginData?.data?.message) {
-      setError(loginData?.data.message);
+    } else if (loginData?.message) {
+      setError(loginData?.message);
     }
   }, [loginData]);
 

@@ -168,15 +168,31 @@ export default function UserManagementPage() {
       header: "Actions",
       cell: ({ row }: { row }) => (
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon">
+          {/* <Button variant="ghost" size="icon">
             <Eye className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon">
-            <Edit className="h-4 w-4" />
-          </Button>
+          </Button> */}
+          <DialogeWrapper
+            // setOpen={setOpen}
+            title={`Edit User ${row.getValue("username")}`}
+            description="Update user details and role"
+            TriggerButton={
+              <Button variant="ghost" size="icon">
+                <Edit className="h-4 w-4" />
+              </Button>
+            }
+          >
+            <UpdateCreateForm
+              endpoint={`${api.USER}/${row.getValue("_id")}`}
+              data={row.original}
+              onSuccess={() => {
+                setRefresh((prev) => prev + 1);
+              }}
+            />
+          </DialogeWrapper>
+
           <CommonAlertDelet
             title={`User ${row.getValue("username")}`}
-            endpoint={`${api.DELETE_USER}/${row.getValue("_id")}`}
+            endpoint={`${api.USER}/${row.getValue("_id")}`}
             onSuccess={() => {
               setRefresh((prev) => prev + 1);
             }}
@@ -185,9 +201,9 @@ export default function UserManagementPage() {
               <Trash2 className="h-4 w-4" />
             </Button>
           </CommonAlertDelet>
-          <Button variant="ghost" size="icon">
+          {/* <Button variant="ghost" size="icon">
             <Key className="h-4 w-4" />
-          </Button>
+          </Button> */}
         </div>
       ),
     },
@@ -268,7 +284,11 @@ export default function UserManagementPage() {
                 </Button>
               }
             >
-              <UpdateCreateForm setRefresh={setRefresh} setOpen={setOpen} />
+              <UpdateCreateForm
+                endpoint={api.USERS_CREATE}
+                onSuccess={() => setRefresh((prev) => prev + 1)}
+                setOpen={setOpen}
+              />
             </DialogeWrapper>
 
             <Dialog>
