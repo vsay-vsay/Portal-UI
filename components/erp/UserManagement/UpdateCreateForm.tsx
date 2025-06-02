@@ -7,19 +7,36 @@ const schema = z.object({
   username: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(5),
-  role: z.string({
-    required_error: "Role is required",
-  }).refine((val) => {
-    const roles = ["Admin", "Accountant", "Teacher", "Student", "Parent", "Staff"];
-    return roles.includes(val);
-  }, {
-    message: "Invalid role",
-  }),
+  role: z
+    .string({
+      required_error: "Role is required",
+    })
+    .refine(
+      (val) => {
+        const roles = [
+          "Admin",
+          "Accountant",
+          "Teacher",
+          "Student",
+          "Parent",
+          "Staff",
+        ];
+        return roles.includes(val);
+      },
+      {
+        message: "Invalid role",
+      }
+    ),
 });
 
 const fields = [
   { name: "name", type: "text", label: "Full Name", placeholder: "Enter name" },
-  { name: "username", type: "text", label: "Username", placeholder: "Enter username" },
+  {
+    name: "username",
+    type: "text",
+    label: "Username",
+    placeholder: "Enter username",
+  },
   { name: "email", type: "email", label: "Email" },
   {
     name: "password",
@@ -44,11 +61,22 @@ const fields = [
 ];
 
 function UpdateCreateForm({
+  setRefresh,
   setOpen,
-}:{
-  setOpen?: (open: boolean) => void;
+}: {
+  setOpen: (open: boolean) => void;
+  setRefresh: (refresh: number) => void;
 }) {
-  return <CommonForm setOpen={setOpen} schema={schema} fields={fields} api="auth/register" mode="create" />;
+  return (
+    <CommonForm
+      setRefresh={setRefresh}
+      setOpen={setOpen}
+      schema={schema}
+      fields={fields}
+      api="auth/register"
+      mode="create"
+    />
+  );
 }
 
 export default UpdateCreateForm;

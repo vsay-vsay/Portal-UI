@@ -38,13 +38,14 @@ import api from "@/utils/api";
 
 export default function UserManagementPage() {
   const [open, setOpen] = useState(false);
+  const [refresh, setRefresh] = useState(0);
   const [fetchUsers, data, loading, error, reset , statusdata] = useRequestHook(api.USERS, "GET", null);
   // Sample data for users
   const [users, setUsers] = useState([]);
 
   useEffect(()=>{
     fetchUsers()
-  },[])
+  },[refresh])
 
   useEffect(() => {
     if (data) {
@@ -243,7 +244,7 @@ export default function UserManagementPage() {
                 </Button>
               }
             >
-              <UpdateCreateForm setOpen={setOpen} />
+              <UpdateCreateForm setRefresh={setRefresh} setOpen={setOpen} />
             </DialogeWrapper>
 
             <Dialog>
