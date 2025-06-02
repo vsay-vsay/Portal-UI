@@ -1,6 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Plus, Search, Filter, Eye, Edit, UserPlus, Key } from "lucide-react";
+import {
+  Plus,
+  Search,
+  Filter,
+  Eye,
+  Edit,
+  UserPlus,
+  Key,
+  Trash2,
+} from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { DataTable } from "@/components/data-table";
 import { Input } from "@/components/ui/input";
@@ -35,24 +44,28 @@ import UpdateCreateForm from "@/components/erp/UserManagement/UpdateCreateForm";
 import { useEffect, useState } from "react";
 import useRequestHook from "@/hooks/requestHook";
 import api from "@/utils/api";
+import { CommonAlertDelet } from "@/components/erp/CommonAlertDelete";
 
 export default function UserManagementPage() {
   const [open, setOpen] = useState(false);
   const [refresh, setRefresh] = useState(0);
-  const [fetchUsers, data, loading, error, reset , statusdata] = useRequestHook(api.USERS, "GET", null);
+  const [fetchUsers, data, loading, error, reset, statusdata] = useRequestHook(
+    api.USERS,
+    "GET",
+    null
+  );
   // Sample data for users
   const [users, setUsers] = useState([]);
 
-  useEffect(()=>{
-    fetchUsers()
-  },[refresh])
+  useEffect(() => {
+    fetchUsers();
+  }, [refresh]);
 
   useEffect(() => {
     if (data) {
       setUsers(data?.data || []);
     }
   }, [data]);
- 
 
   // Sample data for roles
   const roles = [
@@ -153,7 +166,7 @@ export default function UserManagementPage() {
     },
     {
       header: "Actions",
-      cell: () => (
+      cell: ({ row }: { row }) => (
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon">
             <Eye className="h-4 w-4" />
@@ -161,6 +174,17 @@ export default function UserManagementPage() {
           <Button variant="ghost" size="icon">
             <Edit className="h-4 w-4" />
           </Button>
+          <CommonAlertDelet
+            title={`User ${row.getValue("username")}`}
+            endpoint={`${api.DELETE_USER}/${row.getValue("_id")}`}
+            onSuccess={() => {
+              setRefresh((prev) => prev + 1);
+            }}
+          >
+            <Button size="icon" variant="destructive">
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </CommonAlertDelet>
           <Button variant="ghost" size="icon">
             <Key className="h-4 w-4" />
           </Button>
@@ -384,7 +408,11 @@ export default function UserManagementPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <DataTable loading={loading} columns={usersColumns} data={users} />
+              <DataTable
+                loading={loading}
+                columns={usersColumns}
+                data={users}
+              />
             </CardContent>
           </Card>
         </TabsContent>

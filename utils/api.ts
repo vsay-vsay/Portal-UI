@@ -9,6 +9,7 @@ const api = {
   
     // Users
     USERS: "users/all-users",
+    DELETE_USER: "users",
   
     // Students
     STUDENTS: "/api/students",
