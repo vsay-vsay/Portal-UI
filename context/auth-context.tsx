@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import useRequestHook from "@/hooks/requestHook";
+import api from "@/utils/api";
 
 interface User {
   email: string;
@@ -9,6 +11,7 @@ interface User {
   role: string;
   domainName: string;
   token: string;
+ 
 }
 
 interface AuthContextType {
@@ -17,6 +20,7 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   domainName1: string;
+  commond:any;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,6 +30,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [domainName1, setDomainName] = useState<string>("");
   const router = useRouter();
   const [count, setCount] = useState(0);
+  const [commond, setCommonD] = useState<any>(null);
+
+  const [fetchCommon, commonData, isLoading, error, reset, status] =
+    useRequestHook(api.COMMON, "GET", null);
+
+  useEffect(() => {
+    fetchCommon();
+  }, []);
+
+  useEffect(() => {
+    if (commonData) {
+      console.log("common data", commonData);
+      setCommonD(commonData);
+    }
+  }, [commonData]);
   const redirectUser = (role: string) => {
     switch (role) {
       case "Admin":
@@ -93,7 +112,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated, domainName1 }}
+      value={{ user, login, logout, isAuthenticated, domainName1, commond }}
     >
       {children}
     </AuthContext.Provider>

@@ -50,7 +50,7 @@ export default function UserManagementPage() {
   const [open, setOpen] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [fetchUsers, data, loading, error, reset, statusdata] = useRequestHook(
-    api.USERS,
+    api.USERS.ALL,
     "GET",
     null
   );
@@ -182,7 +182,7 @@ export default function UserManagementPage() {
             }
           >
             <UpdateCreateForm
-              endpoint={`${api.USER}/${row.getValue("_id")}`}
+              endpoint={`${api.USERS.BY_ID(row.getValue("_id"))}`}
               data={row.original}
               onSuccess={() => {
                 setRefresh((prev) => prev + 1);
@@ -192,7 +192,7 @@ export default function UserManagementPage() {
 
           <CommonAlertDelet
             title={`User ${row.getValue("username")}`}
-            endpoint={`${api.USER}/${row.getValue("_id")}`}
+            endpoint={`${api.USERS.BY_ID(row.getValue("_id"))}`}
             onSuccess={() => {
               setRefresh((prev) => prev + 1);
             }}
@@ -285,9 +285,8 @@ export default function UserManagementPage() {
               }
             >
               <UpdateCreateForm
-                endpoint={api.USERS_CREATE}
+                endpoint={api.USERS.CREATE}
                 onSuccess={() => setRefresh((prev) => prev + 1)}
-                setOpen={setOpen}
               />
             </DialogeWrapper>
 

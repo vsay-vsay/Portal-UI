@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LoadingButton } from "@/components/ui/loading-button";
 import useRequestHook from "@/hooks/requestHook";
+import api from "@/utils/api";
 
 const SelectOrgForm = ({
   className,
@@ -20,7 +21,7 @@ const SelectOrgForm = ({
   const navigate = useRouter();
   const [loading, setLoading] = useState(false);
   const [VerifyDomain, domainData, isLoading, error, reset] = useRequestHook(
-    "super-admin/domain",
+    api.DOMAIN.CHECK,
     "POST",
     null,
     false,

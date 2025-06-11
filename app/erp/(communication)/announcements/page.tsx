@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Search, Megaphone } from "lucide-react"
 import { PageHeader } from "@/components/page-header"
 import { AnnouncementCard } from "@/components/erp/communication/announcement-card"
+import useRequestHook from "@/hooks/requestHook"
+import api from "@/utils/api"
 
 // Mock data
 const mockAnnouncements = [
@@ -106,6 +108,11 @@ export default function StudentAnnouncementsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedPriority, setSelectedPriority] = useState("all")
+  const [fetchAnnouncement, res, isLoading, error, reset, status]=useRequestHook(api.ANNOUNCEMENTS.ALL, "GET", null);
+
+  useEffect(()=>{
+fetchAnnouncement()
+  },[])
 
   const filteredAnnouncements = mockAnnouncements.filter((announcement) => {
     const matchesSearch =

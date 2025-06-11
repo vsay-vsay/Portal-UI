@@ -1,15 +1,36 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Search, Filter, Download, Calendar, Check, X } from "lucide-react"
-import { PageHeader } from "@/components/page-header"
-import { DataTable } from "@/components/data-table"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Search, Filter, Download, Calendar, Check, X } from "lucide-react";
+import { PageHeader } from "@/components/page-header";
+import { DataTable } from "@/components/data-table";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useRequestHook from "@/hooks/requestHook";
+import api from "@/utils/api";
+import { useEffect } from "react";
 
 export default function AttendancePage() {
+  const [fetchAttendance, res, isLoading, error, reset, status] =
+    useRequestHook(api.ATTENDANCE.ALL, "GET", null);
+
+  useEffect(() => {
+    fetchAttendance();
+  }, []);
   // Sample data for student attendance
   const studentAttendance = [
     {
@@ -62,7 +83,7 @@ export default function AttendancePage() {
       checkedBy: "Robert Wilson",
       remarks: "15 minutes late",
     },
-  ]
+  ];
 
   // Sample data for teacher attendance
   const teacherAttendance = [
@@ -116,7 +137,7 @@ export default function AttendancePage() {
       checkedBy: "Admin",
       remarks: "20 minutes late",
     },
-  ]
+  ];
 
   // Column definitions for the student attendance data table
   const studentAttendanceColumns = [
@@ -141,27 +162,29 @@ export default function AttendancePage() {
       header: "Status",
       accessorKey: "status",
       cell: (info: any) => {
-        const status = info.getValue()
-        let statusClass = "bg-gray-100 text-gray-800"
-        let icon = null
+        const status = info.getValue();
+        let statusClass = "bg-gray-100 text-gray-800";
+        let icon = null;
 
         if (status === "Present") {
-          statusClass = "bg-green-100 text-green-800"
-          icon = <Check className="mr-1 h-3 w-3" />
+          statusClass = "bg-green-100 text-green-800";
+          icon = <Check className="mr-1 h-3 w-3" />;
         } else if (status === "Absent") {
-          statusClass = "bg-red-100 text-red-800"
-          icon = <X className="mr-1 h-3 w-3" />
+          statusClass = "bg-red-100 text-red-800";
+          icon = <X className="mr-1 h-3 w-3" />;
         } else if (status === "Late") {
-          statusClass = "bg-yellow-100 text-yellow-800"
-          icon = <Calendar className="mr-1 h-3 w-3" />
+          statusClass = "bg-yellow-100 text-yellow-800";
+          icon = <Calendar className="mr-1 h-3 w-3" />;
         }
 
         return (
-          <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center w-fit ${statusClass}`}>
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium flex items-center w-fit ${statusClass}`}
+          >
             {icon}
             {status}
           </span>
-        )
+        );
       },
     },
     {
@@ -182,7 +205,7 @@ export default function AttendancePage() {
         </div>
       ),
     },
-  ]
+  ];
 
   // Column definitions for the teacher attendance data table
   const teacherAttendanceColumns = [
@@ -207,27 +230,29 @@ export default function AttendancePage() {
       header: "Status",
       accessorKey: "status",
       cell: (info: any) => {
-        const status = info.getValue()
-        let statusClass = "bg-gray-100 text-gray-800"
-        let icon = null
+        const status = info.getValue();
+        let statusClass = "bg-gray-100 text-gray-800";
+        let icon = null;
 
         if (status === "Present") {
-          statusClass = "bg-green-100 text-green-800"
-          icon = <Check className="mr-1 h-3 w-3" />
+          statusClass = "bg-green-100 text-green-800";
+          icon = <Check className="mr-1 h-3 w-3" />;
         } else if (status === "Absent") {
-          statusClass = "bg-red-100 text-red-800"
-          icon = <X className="mr-1 h-3 w-3" />
+          statusClass = "bg-red-100 text-red-800";
+          icon = <X className="mr-1 h-3 w-3" />;
         } else if (status === "Late") {
-          statusClass = "bg-yellow-100 text-yellow-800"
-          icon = <Calendar className="mr-1 h-3 w-3" />
+          statusClass = "bg-yellow-100 text-yellow-800";
+          icon = <Calendar className="mr-1 h-3 w-3" />;
         }
 
         return (
-          <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center w-fit ${statusClass}`}>
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium flex items-center w-fit ${statusClass}`}
+          >
             {icon}
             {status}
           </span>
-        )
+        );
       },
     },
     {
@@ -248,7 +273,7 @@ export default function AttendancePage() {
         </div>
       ),
     },
-  ]
+  ];
 
   return (
     <div className="space-y-6 p-6">
@@ -322,10 +347,15 @@ export default function AttendancePage() {
           <Card>
             <CardHeader>
               <CardTitle>Student Attendance</CardTitle>
-              <CardDescription>View and manage student attendance records</CardDescription>
+              <CardDescription>
+                View and manage student attendance records
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <DataTable columns={studentAttendanceColumns} data={studentAttendance} />
+              <DataTable
+                columns={studentAttendanceColumns}
+                data={studentAttendance}
+              />
             </CardContent>
           </Card>
         </TabsContent>
@@ -368,14 +398,19 @@ export default function AttendancePage() {
           <Card>
             <CardHeader>
               <CardTitle>Teacher Attendance</CardTitle>
-              <CardDescription>View and manage teacher attendance records</CardDescription>
+              <CardDescription>
+                View and manage teacher attendance records
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <DataTable columns={teacherAttendanceColumns} data={teacherAttendance} />
+              <DataTable
+                columns={teacherAttendanceColumns}
+                data={teacherAttendance}
+              />
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

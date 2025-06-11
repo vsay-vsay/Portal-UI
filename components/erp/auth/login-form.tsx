@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { LoadingButton } from "@/components/ui/loading-button";
 import useRequestHook from "@/hooks/requestHook";
 import { useAuth } from "@/context/auth-context";
+import api from "@/utils/api";
 
 export default function LoginForm({
   className,
@@ -18,7 +19,7 @@ export default function LoginForm({
   const [error, setError] = useState("");
   const { login, domainName1 } = useAuth();
   const [loginUser, loginData, loading, error1, reset] = useRequestHook(
-    "auth/login",
+    api.AUTH.LOGIN,
     "POST",
     null
   );

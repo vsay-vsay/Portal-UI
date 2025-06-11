@@ -44,15 +44,12 @@ const useRequestHook = (
       // Axios request config
       const config = {
         method,
-        url: `${BASE_URL}/api/${endpoint}`,
+        url: `${BASE_URL}${endpoint}`,
         headers,
         ...(method === "GET" || method === "DELETE"
           ? { params: payload }
           : {
-              data: {
-                product: ["erp"],
-                ...payload,
-              },
+              data: payload
             }),
       };
 
