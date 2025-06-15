@@ -28,6 +28,7 @@ export default function RootLayout({
           themes={["light", "dark", "blue", "green", "purple"]}
         >
           <AuthProvider>{children}</AuthProvider>
+
           <Toaster />
         </ThemeProvider>
       </body>

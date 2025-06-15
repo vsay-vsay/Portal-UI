@@ -32,13 +32,7 @@ export default function LoginForm({
 
   useEffect(() => {
     if (loginData?.data.token) {
-      login({
-        token: loginData?.data.token,
-        email: loginData?.data.email,
-        name: loginData?.data.name,
-        role: loginData?.data.role,
-        domainName: loginData?.data.domainName,
-      });
+      login(loginData?.data);
     } else if (loginData?.message) {
       setError(loginData?.message);
     }
