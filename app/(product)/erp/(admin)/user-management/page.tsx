@@ -45,6 +45,19 @@ import { useEffect, useState } from "react";
 import useRequestHook from "@/hooks/requestHook";
 import api from "@/utils/api";
 import { CommonAlertDelet } from "@/components/erp/CommonAlertDelete";
+import { generatePageMetadata } from '@/lib/metadata'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'User Management',
+  description: 'Manage users, roles, and permissions in the ERP system. Create, update, and delete user accounts and roles.',
+  keywords: ['ERP', 'User Management', 'Roles', 'Permissions', 'Admin Panel'],
+  baseTitle: 'ERP System',
+})
+
+
+
+
 
 export default function UserManagementPage() {
   const [open, setOpen] = useState(false);

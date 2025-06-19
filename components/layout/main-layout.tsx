@@ -3,7 +3,6 @@
 import type React from "react";
 
 import { useState } from "react";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { cn } from "@/lib/utils";
 import { SidebarProvider } from "../ui/sidebar";

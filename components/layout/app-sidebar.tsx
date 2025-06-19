@@ -28,7 +28,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         {sidebarData?.navGroups.map((group:any) => (
-          <NavGroup key={group.title} {...group} />
+          <NavGroup key={roup.title} {...group} />
         ))}
       </SidebarContent>
       <SidebarFooter>
