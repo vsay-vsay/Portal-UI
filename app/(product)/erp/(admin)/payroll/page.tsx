@@ -19,6 +19,20 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Payroll Management',
+  description: 'Manage salary structures, process payroll, and generate payslips for employees within the ERP system.',
+  keywords: ['ERP', 'Payroll', 'Salary Structures', 'Payslips', 'Employee Management'],
+  baseTitle: 'ERP System',
+})
+
+
 export default function PayrollPage() {
   // Sample data for salary structures
   const salaryStructures = [

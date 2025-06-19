@@ -20,6 +20,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Fee Management',
+  description: 'Manage fee structures, collect payments, and generate reports for student fees within the ERP system.',
+  keywords: ['ERP', 'Fee Management', 'Student Fees', 'Payments', 'Financial Management'],
+  baseTitle: 'ERP System',
+})
+
+
 export default function FeeManagementPage() {
   // Sample data for fee structures
   const feeStructures = [

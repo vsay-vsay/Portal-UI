@@ -15,6 +15,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Departments',
+  description: 'Manage academic departments of your institution, including faculty, students, and courses.',
+  keywords: ['ERP', 'Departments', 'Academic Management', 'Faculty', 'Students', 'Courses'],
+  baseTitle: 'ERP System',
+})
+
+
 
 // Sample data for departments
 const departments = [

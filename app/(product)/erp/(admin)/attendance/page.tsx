@@ -24,6 +24,20 @@ import useRequestHook from "@/hooks/requestHook";
 import api from "@/utils/api";
 import { useEffect } from "react";
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Attendance Management',
+  description: 'Track and manage attendance for students and teachers within the ERP system.',
+  keywords: ['ERP', 'Attendance', 'Students', 'Teachers', 'Management'],
+  baseTitle: 'ERP System',
+})
+
+
 export default function AttendancePage() {
   const [fetchAttendance, res, isLoading, error, reset, status] =
     useRequestHook(api.ATTENDANCE.ALL, "GET", null);

@@ -20,6 +20,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Student Management',
+  description: 'Manage students, view profiles, and track academic progress within the ERP system.',
+  keywords: ['ERP', 'Student Management', 'Academic Progress', 'Student Profiles', 'Education'],
+  baseTitle: 'ERP System',
+})
+
+
 export default function StudentsPage() {
   // Sample data for students
   const students = [

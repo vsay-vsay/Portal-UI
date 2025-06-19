@@ -4,6 +4,20 @@ import { MessageDetail } from "@/components/erp/communication/messages/message-d
 import { MessageList } from "@/components/erp/communication/messages/message-list"
 import { Card } from "@/components/ui/card"
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Messages',
+  description: 'Manage your messages, announcements, and communications within the ERP system.',
+  keywords: ['ERP', 'Messages', 'Communication', 'Announcements', 'Messaging'],
+  baseTitle: 'ERP System',
+})
+
+
 export default function MessagesPage() {
   return (
     <div className="flex flex-col gap-6">

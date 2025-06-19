@@ -19,6 +19,20 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Class Management',
+  description: 'Manage classes, sections, and assign teachers within the ERP system.',
+  keywords: ['ERP', 'Class Management', 'Sections', 'Teachers', 'Education'],
+  baseTitle: 'ERP System',
+})
+
+
 export default function ClassManagementPage() {
   // Sample data for classes
   const classes = [

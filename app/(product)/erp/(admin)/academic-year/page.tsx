@@ -17,6 +17,18 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Academic Year Management',
+  description: 'Create and manage academic years, terms, and sessions within the ERP system.',
+  keywords: ['ERP', 'Academic Year', 'Terms', 'Sessions', 'Management'],
+  baseTitle: 'ERP System',
+})
 
 export default function AcademicYearPage() {
   // Sample data for academic years

@@ -1,10 +1,34 @@
-import { Activity, Building, GraduationCap, Users } from "lucide-react"
+import { Activity, Building, GraduationCap, Users } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { PageHeader } from "@/components/page-header"
-import { StatsCard } from "@/components/stats-card"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageHeader } from "@/components/page-header";
+import { StatsCard } from "@/components/stats-card";
+
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = generatePageMetadata({
+  title: "Admin Dashboard",
+  description:
+    "Overview of your educational institution, including student and teacher statistics, attendance rates, and recent activities.",
+  keywords: [
+    "ERP",
+    "Admin Dashboard",
+    "Education",
+    "Statistics",
+    "Analytics",
+    "Reports",
+  ],
+  baseTitle: "ERP System",
+});
 
 export default function AdminDashboardPage() {
   return (
@@ -31,7 +55,12 @@ export default function AdminDashboardPage() {
             icon={<Users className="h-4 w-4" />}
             trend={{ value: 5, isPositive: true }}
           />
-          <StatsCard title="Branches" value="8" description="Active campuses" icon={<Building className="h-4 w-4" />} />
+          <StatsCard
+            title="Branches"
+            value="8"
+            description="Active campuses"
+            icon={<Building className="h-4 w-4" />}
+          />
           <StatsCard
             title="Attendance Rate"
             value="94.2%"
@@ -53,7 +82,9 @@ export default function AdminDashboardPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Recent Activities</CardTitle>
-                  <CardDescription>Latest activities across the institution</CardDescription>
+                  <CardDescription>
+                    Latest activities across the institution
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -62,8 +93,12 @@ export default function AdminDashboardPage() {
                         <Users className="h-4 w-4 text-primary" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium">New Teacher Onboarded</p>
-                        <p className="text-xs text-muted-foreground">2 hours ago</p>
+                        <p className="text-sm font-medium">
+                          New Teacher Onboarded
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          2 hours ago
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -71,8 +106,12 @@ export default function AdminDashboardPage() {
                         <GraduationCap className="h-4 w-4 text-primary" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium">Exam Results Published</p>
-                        <p className="text-xs text-muted-foreground">Yesterday</p>
+                        <p className="text-sm font-medium">
+                          Exam Results Published
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Yesterday
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -80,8 +119,12 @@ export default function AdminDashboardPage() {
                         <Building className="h-4 w-4 text-primary" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium">New Branch Setup Completed</p>
-                        <p className="text-xs text-muted-foreground">3 days ago</p>
+                        <p className="text-sm font-medium">
+                          New Branch Setup Completed
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          3 days ago
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -90,21 +133,33 @@ export default function AdminDashboardPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Upcoming Events</CardTitle>
-                  <CardDescription>Events scheduled in the next 30 days</CardDescription>
+                  <CardDescription>
+                    Events scheduled in the next 30 days
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex flex-col gap-1">
                       <p className="text-sm font-medium">Annual Sports Day</p>
-                      <p className="text-xs text-muted-foreground">May 15, 2023</p>
+                      <p className="text-xs text-muted-foreground">
+                        May 15, 2023
+                      </p>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <p className="text-sm font-medium">Parent-Teacher Meeting</p>
-                      <p className="text-xs text-muted-foreground">May 20, 2023</p>
+                      <p className="text-sm font-medium">
+                        Parent-Teacher Meeting
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        May 20, 2023
+                      </p>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <p className="text-sm font-medium">Board Exam Preparation Workshop</p>
-                      <p className="text-xs text-muted-foreground">May 25, 2023</p>
+                      <p className="text-sm font-medium">
+                        Board Exam Preparation Workshop
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        May 25, 2023
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -112,7 +167,9 @@ export default function AdminDashboardPage() {
               <Card className="lg:col-span-1">
                 <CardHeader>
                   <CardTitle>System Status</CardTitle>
-                  <CardDescription>Current system health and performance</CardDescription>
+                  <CardDescription>
+                    Current system health and performance
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -122,11 +179,15 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm">Database Status</span>
-                      <span className="text-sm font-medium text-emerald-500">Healthy</span>
+                      <span className="text-sm font-medium text-emerald-500">
+                        Healthy
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm">Last Backup</span>
-                      <span className="text-sm font-medium">Today, 03:00 AM</span>
+                      <span className="text-sm font-medium">
+                        Today, 03:00 AM
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm">Storage Usage</span>
@@ -195,11 +256,15 @@ export default function AdminDashboardPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Analytics Dashboard</CardTitle>
-                <CardDescription>Detailed analytics will be displayed here</CardDescription>
+                <CardDescription>
+                  Detailed analytics will be displayed here
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex h-[300px] items-center justify-center rounded-md border border-dashed">
-                  <p className="text-sm text-muted-foreground">Analytics charts and graphs will be displayed here</p>
+                  <p className="text-sm text-muted-foreground">
+                    Analytics charts and graphs will be displayed here
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -208,11 +273,15 @@ export default function AdminDashboardPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Reports</CardTitle>
-                <CardDescription>Generated reports will be displayed here</CardDescription>
+                <CardDescription>
+                  Generated reports will be displayed here
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex h-[300px] items-center justify-center rounded-md border border-dashed">
-                  <p className="text-sm text-muted-foreground">Reports will be displayed here</p>
+                  <p className="text-sm text-muted-foreground">
+                    Reports will be displayed here
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -221,11 +290,15 @@ export default function AdminDashboardPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Notifications</CardTitle>
-                <CardDescription>System notifications will be displayed here</CardDescription>
+                <CardDescription>
+                  System notifications will be displayed here
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex h-[300px] items-center justify-center rounded-md border border-dashed">
-                  <p className="text-sm text-muted-foreground">Notifications will be displayed here</p>
+                  <p className="text-sm text-muted-foreground">
+                    Notifications will be displayed here
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -233,5 +306,5 @@ export default function AdminDashboardPage() {
         </Tabs>
       </div>
     </>
-  )
+  );
 }

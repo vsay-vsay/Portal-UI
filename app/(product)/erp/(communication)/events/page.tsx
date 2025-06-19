@@ -32,6 +32,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { EventPermissionsDialog } from "@/components/erp/events/event-permissions-dialog"
 import { EventDetailsDialog } from "@/components/erp/events/event-details-dialog"
 import { CreateEventDialog } from "@/components/erp/events/create-event-dialog"
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Events Management',
+  description: 'Create, manage, and control access to institutional events with detailed permissions and analytics.',
+  keywords: ['ERP', 'Events Management', 'Institutional Events', 'Event Permissions', 'Event Analytics'],
+  baseTitle: 'ERP System',
+})
+
 
 // Mock data for events
 const mockEvents = [

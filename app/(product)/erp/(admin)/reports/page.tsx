@@ -6,6 +6,18 @@ import { DataTable } from "@/components/data-table"
 import { PageHeader } from "@/components/page-header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Reports',
+  description: 'Generate and manage reports for your institution, including academic, financial, and administrative data.',
+  keywords: ['ERP', 'Reports', 'Academic Reports', 'Financial Reports', 'Administrative Reports'],
+  baseTitle: 'ERP System',
+})
 
 // Sample data for the reports table
 const reports = [

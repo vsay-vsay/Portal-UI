@@ -18,6 +18,19 @@ import { AnnouncementCard } from "@/components/erp/communication/announcement-ca
 import { useToast } from "@/hooks/use-toast";
 
 import type { Announcement } from "@/lib/types";
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Manage Announcements',
+  description: 'Create, edit, and manage school announcements',
+  keywords: ['ERP', 'Announcements', 'School Management', 'Communication'],
+  baseTitle: 'ERP System',
+})
+
 
 export default function AdminAnnouncementsPage() {
   const { toast } = useToast();

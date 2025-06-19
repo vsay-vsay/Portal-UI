@@ -11,6 +11,20 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Notifications',
+  description: 'Manage system notifications and alerts for the ERP system, including user actions, system updates, and task reminders.',
+  keywords: ['ERP', 'Announcements', 'School Management', 'Communication'],
+  baseTitle: 'ERP System',
+})
+
+
 // Sample notifications data
 const notifications = [
   {
