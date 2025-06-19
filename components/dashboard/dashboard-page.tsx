@@ -6,6 +6,7 @@ import { DashboardStats } from "@/components/dashboard/dashboard-stats"
 import { RecentSales } from "@/components/dashboard/recent-sales"
 import { OverviewChart } from "@/components/dashboard/overview-chart"
 
+
 export function DashboardPage() {
   return (
     <div className="flex flex-col gap-4">
