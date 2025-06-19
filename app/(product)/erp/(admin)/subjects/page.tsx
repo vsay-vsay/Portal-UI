@@ -19,6 +19,20 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 
+import { Metadata } from "next";
+import { generatePageMetadata } from "@/lib/metadata";
+
+
+
+
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Subject Management',
+  description: 'Manage subjects, assign teachers, and set curriculum for your institution within the ERP system.',
+  keywords: ['ERP', 'Announcements', 'School Management', 'Communication'],
+  baseTitle: 'ERP System',
+})
+
+
 export default function SubjectsPage() {
   // Sample data for subjects
   const subjects = [
