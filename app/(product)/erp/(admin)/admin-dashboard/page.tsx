@@ -6,6 +6,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { PageHeader } from "@/components/page-header"
 import { StatsCard } from "@/components/stats-card"
 
+import { generatePageMetadata } from "@/lib/metadata";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = generatePageMetadata({
+  title: "ERP System - Admin Dashboard",
+  description:"Overview of your educational institution's performance and management",
+  keywords:[
+    "admin dashboard",
+    "education management",
+    "institution overview",
+    "school administration",
+    "academic performance",
+    "student management",
+    "teacher management",
+    "attendance tracking",
+    "financial overview",
+    "event management"
+  ],
+  baseTitle: "",
+});
+
 export default function AdminDashboardPage() {
   return (
     <>

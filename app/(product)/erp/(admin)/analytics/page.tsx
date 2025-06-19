@@ -5,6 +5,27 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+import { generatePageMetadata } from "@/lib/metadata";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = generatePageMetadata({
+  title: "ERP System - Analytics",
+  description:"Comprehensive analytics and insights for your institution",
+  keywords: [
+    "analytics",
+    "education analytics",
+    "institution insights",
+    "academic performance",
+    "financial analysis",
+    "operational metrics",
+    "admissions data",
+    "school management",
+    "data visualization",
+    "educational trends"
+  ],
+  baseTitle: "",
+});
+
 export default function AnalyticsPage() {
   return (
     <>
