@@ -1,3 +1,5 @@
+
+"use client";
 import useRequestHook from "@/hooks/requestHook";
 import api from "@/utils/api";
 import React from "react";
@@ -9,7 +11,9 @@ function Page() {
     null
   );
 
-  return <div></div>;
+  return <div>
+
+  </div>;
 }
 
 export default Page;

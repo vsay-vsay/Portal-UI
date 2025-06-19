@@ -345,12 +345,12 @@ export default function AdminAnnouncementsPage() {
         </Tabs>
       )}
 
-      <AnnouncementDialog
+      {/* <AnnouncementDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         announcement={selectedAnnouncement}
         onSuccess={fetchAnnouncements}
-      />
+      /> */}
     </div>
   );
 }
