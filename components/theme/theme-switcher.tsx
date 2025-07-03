@@ -52,7 +52,7 @@ export function ThemeSwitcher() {
             {theme === "system" && <Check className="ml-auto h-4 w-4" />}
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        {/* <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <Palette className="mr-2 h-4 w-4" />
@@ -68,7 +68,7 @@ export function ThemeSwitcher() {
               ))}
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
-        </DropdownMenuSub>
+        </DropdownMenuSub> */}
       </DropdownMenuContent>
     </DropdownMenu>
   )
