@@ -370,6 +370,7 @@ const HeaderActions = ({
 const useAnnouncements = () => {
   const { toast } = useToast();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [isRefreshing, setIsRefreshing]=useState<boolean>(false)
  
   const [getAnnouncements, announcementsData, isLoading, error, reset, status ]=useRequestHook(api.ANNOUNCEMENTS.ALL, "GET", null);
 
