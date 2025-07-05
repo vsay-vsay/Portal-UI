@@ -1,11 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, RefreshCw, User, Building, Calendar } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import useRequestHook from "@/hooks/requestHook"
+import api from "@/utils/api"
 
 interface AdminInfo {
   id: string
@@ -23,37 +25,9 @@ interface AdminInfo {
 }
 
 export function SuperAdminInfo() {
-  const [loading, setLoading] = useState(false)
-  const [adminInfo, setAdminInfo] = useState<AdminInfo | null>(null)
   const { toast } = useToast()
 
-  const fetchAdminInfo = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch("http://localhost:3004/api/super-admin", {
-        method: "GET",
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        setAdminInfo(data)
-        toast({
-          title: "Success",
-          description: "Admin information retrieved successfully",
-        })
-      } else {
-        throw new Error("Failed to fetch admin info")
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to fetch admin information",
-        variant: "destructive",
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [fetchAdminInfo, adminInfo, loading, error, reset]=useRequestHook(api.SUPER_ADMIN.CHECK_LICENCE, "GET", null)
 
   useEffect(() => {
     fetchAdminInfo()
@@ -94,19 +68,19 @@ export function SuperAdminInfo() {
                   <CardContent className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-sm font-medium">Name:</span>
-                      <span className="text-sm">{adminInfo.name}</span>
+                      <span className="text-sm">{adminInfo?.name}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm font-medium">Email:</span>
-                      <span className="text-sm">{adminInfo.email}</span>
+                      <span className="text-sm">{adminInfo?.email}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm font-medium">Role:</span>
-                      <Badge variant="default">{adminInfo.role}</Badge>
+                      <Badge variant="default">{adminInfo?.role}</Badge>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm font-medium">ID:</span>
-                      <span className="text-sm font-mono">{adminInfo.id}</span>
+                      <span className="text-sm font-mono">{adminInfo?.id}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -121,12 +95,12 @@ export function SuperAdminInfo() {
                   <CardContent className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-sm font-medium">Created:</span>
-                      <span className="text-sm">{new Date(adminInfo.createdAt).toLocaleDateString()}</span>
+                      <span className="text-sm">{new Date(adminInfo?.createdAt).toLocaleDateString()}</span>
                     </div>
-                    {adminInfo.lastLogin && (
+                    {adminInfo?.lastLogin && (
                       <div className="flex justify-between">
                         <span className="text-sm font-medium">Last Login:</span>
-                        <span className="text-sm">{new Date(adminInfo.lastLogin).toLocaleDateString()}</span>
+                        <span className="text-sm">{new Date(adminInfo?.lastLogin).toLocaleDateString()}</span>
                       </div>
                     )}
                     <div className="flex justify-between">
@@ -147,16 +121,16 @@ export function SuperAdminInfo() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {adminInfo.domains.map((domain, index) => (
+                      {adminInfo?.domains?.map((domain:any, index:number) => (
                         <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
                           <div className="flex items-center gap-3">
-                            <span className="font-medium">{domain.name}</span>
-                            <Badge variant={domain.status === "active" ? "default" : "secondary"}>
-                              {domain.status}
+                            <span className="font-medium">{domain?.name}</span>
+                            <Badge variant={domain?.status === "active" ? "default" : "secondary"}>
+                              {domain?.status}
                             </Badge>
                           </div>
-                          <Badge variant={domain.subscriptionStatus === "active" ? "default" : "destructive"}>
-                            {domain.subscriptionStatus}
+                          <Badge variant={domain?.subscriptionStatus === "active" ? "default" : "destructive"}>
+                            {domain?.subscriptionStatus}
                           </Badge>
                         </div>
                       ))}

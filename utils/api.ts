@@ -196,8 +196,19 @@ const api = {
   DASHBOARD: `${BASE}/dashboard`,
   COMMON: `${BASE}/common`,
   FEEDBACK: `${BASE}/feedback`,
-  SUPER_ADMIN: `${BASE}/super-admin`,
-  PAYMENT: `${BASE}/payment`,
+  SUPER_ADMIN: {
+    CREAT_DOMAIN: `${BASE}/super-admin/create-domain`,
+    UPDATE_DOMAIN: `${BASE}/super-admin/domain`,
+    CHECK_DOMAIN: `${BASE}/super-admin/domain`,
+
+    CHECK_LICENCE: `${BASE}/super-admin`,
+    TOGGLE_SUBSCRIPTION: `${BASE}/super-admin/toggle-subscription`,
+  },
+  PAYMENT: {
+    INIT_PAYMENT: `${BASE}/payment/initialize-payment`,
+    VERIFY_PAYMENT: `${BASE}/payment/verify-payment`,
+    GET_SUBSCRIPTION_STATUS: `${BASE}/payment/subscription-status`,
+  },
   LOGS: `${BASE}/logs`,
 };
 

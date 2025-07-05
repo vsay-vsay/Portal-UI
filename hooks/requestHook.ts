@@ -18,7 +18,7 @@ const useRequestHook = (
   const [error, setError] = useState<string | null>(null);
   const [statusCode, setStatusCode] = useState<number | null>(null);
 
-  const fetchData = async (customData: any = initialData) => {
+  const fetchData = async (customData: any = initialData, urlParameter=null) => {
     setLoading(true);
     setError(null);
     setStatusCode(null);
@@ -44,7 +44,7 @@ const useRequestHook = (
       // Axios request config
       const config = {
         method,
-        url: `${BASE_URL}${endpoint}`,
+        url: `${BASE_URL}${endpoint}/${urlParameter}`,
         headers,
         ...(method === "GET" || method === "DELETE"
           ? { params: payload }

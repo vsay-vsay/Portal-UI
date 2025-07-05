@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Search, ToggleRight } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import useRequestHook from "@/hooks/requestHook"
+import api from "@/utils/api"
 
 interface SubscriptionStatus {
   status: string
@@ -21,88 +23,118 @@ interface SubscriptionStatus {
   [key: string]: any
 }
 
+interface GetStatusData {
+  domainName: string
+}
+
+interface ToggleSubscriptionData {
+  domainName: string
+  subscriptionId: string
+}
+
+
 export function SubscriptionManagement() {
-  const [statusLoading, setStatusLoading] = useState(false)
-  const [toggleLoading, setToggleLoading] = useState(false)
-  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus | null>(null)
+  
   const { toast } = useToast()
 
-  const [statusForm, setStatusForm] = useState({
+
+  
+  // API hooks
+  const [getSubscriptionStatus, statusResult, isGettingStatus, statusError, statusReset, statusStatus] = 
+    useRequestHook(api.PAYMENT.GET_SUBSCRIPTION_STATUS, "GET", null, true, false)
+  
+  const [toggleSubscription, toggleResult, isToggling, toggleError, toggleReset, toggleStatus] = 
+    useRequestHook(api.SUPER_ADMIN.TOGGLE_SUBSCRIPTION, "POST", null, true, false)
+
+  // Form states
+  const [statusForm, setStatusForm] = useState<GetStatusData>({
     domainName: "",
   })
 
-  const [toggleForm, setToggleForm] = useState({
+  const [toggleForm, setToggleForm] = useState<ToggleSubscriptionData>({
     domainName: "",
     subscriptionId: "",
   })
 
-  const handleGetSubscriptionStatus = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatusLoading(true)
-
-    try {
-      const response = await fetch(`http://localhost:3004/api/payment/subscription-status/${statusForm.domainName}`, {
-        method: "GET",
+  // Handle subscription status success
+  useEffect(() => {
+    if (statusStatus === "success" && statusResult) {
+      toast({
+        title: "Success",
+        description: "Subscription status retrieved successfully",
       })
+    }
+  }, [statusStatus, statusResult, toast])
 
-      if (response.ok) {
-        const data = await response.json()
-        setSubscriptionStatus(data)
-        toast({
-          title: "Success",
-          description: "Subscription status retrieved successfully",
-        })
-      } else {
-        throw new Error("Failed to get subscription status")
-      }
-    } catch (error) {
+  // Handle subscription status error
+  useEffect(() => {
+    if (statusError) {
       toast({
         title: "Error",
         description: "Failed to get subscription status",
         variant: "destructive",
       })
-      setSubscriptionStatus(null)
-    } finally {
-      setStatusLoading(false)
     }
-  }
+  }, [statusError, toast])
 
-  const handleToggleSubscription = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setToggleLoading(true)
-
-    try {
-      const response = await fetch("http://localhost:3004/api/super-admin/toggle-subscription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(toggleForm),
+  // Handle toggle subscription success
+  useEffect(() => {
+    if (toggleStatus === "success" && toggleResult) {
+      toast({
+        title: "Success",
+        description: "Subscription toggled successfully",
       })
+      console.log("Toggle subscription response:", toggleResult)
+      setToggleForm({
+        domainName: "",
+        subscriptionId: "",
+      })
+    }
+  }, [toggleStatus, toggleResult, toast])
 
-      if (response.ok) {
-        const data = await response.json()
-        toast({
-          title: "Success",
-          description: "Subscription toggled successfully",
-        })
-        console.log("Toggle subscription response:", data)
-        setToggleForm({
-          domainName: "",
-          subscriptionId: "",
-        })
-      } else {
-        throw new Error("Failed to toggle subscription")
-      }
-    } catch (error) {
+  // Handle toggle subscription error
+  useEffect(() => {
+    if (toggleError) {
       toast({
         title: "Error",
         description: "Failed to toggle subscription",
         variant: "destructive",
       })
-    } finally {
-      setToggleLoading(false)
     }
+  }, [toggleError, toast])
+
+  const handleGetSubscriptionStatus = async () => {
+    if (!statusForm.domainName.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a domain name",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // Reset previous results
+    statusReset()
+    
+    // Make API call with domain name as URL parameter
+    await getSubscriptionStatus(null, statusForm.domainName)
+  }
+
+  const handleToggleSubscription = async () => {
+    if (!toggleForm.domainName.trim() || !toggleForm.subscriptionId.trim()) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // Reset previous results
+    toggleReset()
+    
+    // Make API call with form data
+    await toggleSubscription(toggleForm)
   }
 
   return (
@@ -116,7 +148,7 @@ export function SubscriptionManagement() {
           <CardDescription>Get the current subscription status for a domain</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleGetSubscriptionStatus} className="space-y-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="statusDomainName">Domain Name</Label>
               <Input
@@ -127,47 +159,51 @@ export function SubscriptionManagement() {
                 required
               />
             </div>
-            <Button type="submit" disabled={statusLoading}>
-              {statusLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button 
+              onClick={handleGetSubscriptionStatus} 
+              disabled={isGettingStatus}
+              className="w-full"
+            >
+              {isGettingStatus && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Get Status
             </Button>
-          </form>
+          </div>
 
-          {subscriptionStatus && (
+          {statusResult && (
             <div className="mt-6 p-4 border rounded-lg bg-gray-50">
               <h4 className="font-medium mb-3">Subscription Details</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm font-medium">Domain:</span>
-                    <span className="text-sm">{subscriptionStatus.domainName}</span>
+                    <span className="text-sm">{statusResult?.domainName}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm font-medium">Status:</span>
-                    <Badge variant={subscriptionStatus.isActive ? "default" : "secondary"}>
-                      {subscriptionStatus.status}
+                    <Badge variant={statusResult?.isActive ? "default" : "secondary"}>
+                      {statusResult?.status}
                     </Badge>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm font-medium">Subscription ID:</span>
-                    <span className="text-sm font-mono">{subscriptionStatus.subscriptionId}</span>
+                    <span className="text-sm font-mono">{statusResult?.subscriptionId}</span>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm font-medium">Plan ID:</span>
-                    <span className="text-sm font-mono">{subscriptionStatus.planId}</span>
+                    <span className="text-sm font-mono">{statusResult?.planId}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm font-medium">Active:</span>
-                    <Badge variant={subscriptionStatus.isActive ? "default" : "destructive"}>
-                      {subscriptionStatus.isActive ? "Yes" : "No"}
+                    <Badge variant={statusResult?.isActive ? "default" : "destructive"}>
+                      {statusResult?.isActive ? "Yes" : "No"}
                     </Badge>
                   </div>
-                  {subscriptionStatus.expiryDate && (
+                  {statusResult?.expiryDate && (
                     <div className="flex justify-between">
                       <span className="text-sm font-medium">Expires:</span>
-                      <span className="text-sm">{subscriptionStatus.expiryDate}</span>
+                      <span className="text-sm">{statusResult?.expiryDate}</span>
                     </div>
                   )}
                 </div>
@@ -186,7 +222,7 @@ export function SubscriptionManagement() {
           <CardDescription>Enable or disable a subscription for a domain</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleToggleSubscription} className="space-y-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="toggleDomainName">Domain Name</Label>
               <Input
@@ -207,11 +243,15 @@ export function SubscriptionManagement() {
                 required
               />
             </div>
-            <Button type="submit" disabled={toggleLoading}>
-              {toggleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button 
+              onClick={handleToggleSubscription} 
+              disabled={isToggling}
+              className="w-full"
+            >
+              {isToggling && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Toggle Subscription
             </Button>
-          </form>
+          </div>
         </CardContent>
       </Card>
     </div>
