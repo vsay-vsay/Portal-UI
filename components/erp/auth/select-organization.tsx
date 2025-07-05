@@ -17,7 +17,6 @@ const SelectOrgForm = ({
 }: React.ComponentProps<"form">) => {
   const [domainName, setDomain] = useState("");
 
-
   const navigate = useRouter();
   const [loading, setLoading] = useState(false);
   const [VerifyDomain, domainData, isLoading, error, reset] = useRequestHook(
@@ -31,8 +30,7 @@ const SelectOrgForm = ({
   // ✅ Check if domain is already stored in browser, redirect to login page
   useEffect(() => {
     const storedDomain = localStorage.getItem("selectedDomain");
-  
- 
+
     if (storedDomain) {
       navigate.replace("/"); // Redirect to login page
     }
@@ -52,7 +50,7 @@ const SelectOrgForm = ({
         localStorage.setItem("loginImage", domainData?.data?.loginImage);
 
         navigate.replace("/");
-      } 
+      }
     }
   }, [domainData, domainName]);
 

@@ -1,37 +1,49 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Loader2, RefreshCw, User, Building, Calendar } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import useRequestHook from "@/hooks/requestHook"
-import api from "@/utils/api"
+import { useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, RefreshCw, User, Building, Calendar } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import useRequestHook from "@/hooks/requestHook";
+import api from "@/utils/api";
 
 interface AdminInfo {
-  id: string
-  name: string
-  email: string
-  role: string
-  createdAt: string
-  lastLogin?: string
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  createdAt: string;
+  lastLogin?: string;
   domains: Array<{
-    name: string
-    status: string
-    subscriptionStatus: string
-  }>
-  [key: string]: any
+    name: string;
+    status: string;
+    subscriptionStatus: string;
+  }>;
+  [key: string]: any;
 }
 
 export function SuperAdminInfo() {
-  const { toast } = useToast()
+  const { toast } = useToast();
 
-  const [fetchAdminInfo, adminInfo, loading, error, reset]=useRequestHook(api.SUPER_ADMIN.CHECK_LICENCE, "GET", null)
+  const [fetchAdminInfo, adminInfo, loading, error, reset] = useRequestHook(
+    api.SUPER_ADMIN.CHECK_LICENCE,
+    "GET",
+    null,
+    true,
+    false
+  );
 
   useEffect(() => {
-    fetchAdminInfo()
-  }, [])
+    fetchAdminInfo();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -43,10 +55,21 @@ export function SuperAdminInfo() {
                 <User className="h-5 w-5" />
                 Super Admin Information
               </CardTitle>
-              <CardDescription>View current super admin details and managed domains</CardDescription>
+              <CardDescription>
+                View current super admin details and managed domains
+              </CardDescription>
             </div>
-            <Button onClick={fetchAdminInfo} disabled={loading} variant="outline" size="sm">
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            <Button
+              onClick={fetchAdminInfo}
+              disabled={loading}
+              variant="outline"
+              size="sm"
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCw className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </CardHeader>
@@ -95,17 +118,25 @@ export function SuperAdminInfo() {
                   <CardContent className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-sm font-medium">Created:</span>
-                      <span className="text-sm">{new Date(adminInfo?.createdAt).toLocaleDateString()}</span>
+                      <span className="text-sm">
+                        {new Date(adminInfo?.createdAt).toLocaleDateString()}
+                      </span>
                     </div>
                     {adminInfo?.lastLogin && (
                       <div className="flex justify-between">
                         <span className="text-sm font-medium">Last Login:</span>
-                        <span className="text-sm">{new Date(adminInfo?.lastLogin).toLocaleDateString()}</span>
+                        <span className="text-sm">
+                          {new Date(adminInfo?.lastLogin).toLocaleDateString()}
+                        </span>
                       </div>
                     )}
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium">Total Domains:</span>
-                      <Badge variant="secondary">{adminInfo.domains?.length || 0}</Badge>
+                      <span className="text-sm font-medium">
+                        Total Domains:
+                      </span>
+                      <Badge variant="secondary">
+                        {adminInfo.domains?.length || 0}
+                      </Badge>
                     </div>
                   </CardContent>
                 </Card>
@@ -121,15 +152,30 @@ export function SuperAdminInfo() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {adminInfo?.domains?.map((domain:any, index:number) => (
-                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                      {adminInfo?.domains?.map((domain: any, index: number) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
                           <div className="flex items-center gap-3">
                             <span className="font-medium">{domain?.name}</span>
-                            <Badge variant={domain?.status === "active" ? "default" : "secondary"}>
+                            <Badge
+                              variant={
+                                domain?.status === "active"
+                                  ? "default"
+                                  : "secondary"
+                              }
+                            >
                               {domain?.status}
                             </Badge>
                           </div>
-                          <Badge variant={domain?.subscriptionStatus === "active" ? "default" : "destructive"}>
+                          <Badge
+                            variant={
+                              domain?.subscriptionStatus === "active"
+                                ? "default"
+                                : "destructive"
+                            }
+                          >
                             {domain?.subscriptionStatus}
                           </Badge>
                         </div>
@@ -143,7 +189,9 @@ export function SuperAdminInfo() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Raw Data</CardTitle>
-                    <CardDescription>Complete API response for debugging</CardDescription>
+                    <CardDescription>
+                      Complete API response for debugging
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <pre className="text-xs bg-gray-100 p-4 rounded-lg overflow-auto max-h-64">
@@ -163,5 +211,5 @@ export function SuperAdminInfo() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

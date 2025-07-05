@@ -42,7 +42,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [fetchCommon, commonResponse] = useRequestHook(api.COMMON, "GET", null);
 
   useEffect(() => {
-    fetchCommon();
+    const selectedDomain = localStorage.getItem("selectedDomain");
+    const domainName = localStorage.getItem("domainName");
+
+    if(selectedDomain && domainName){
+      fetchCommon();
+    }
+   
   }, []);
 
   useEffect(() => {

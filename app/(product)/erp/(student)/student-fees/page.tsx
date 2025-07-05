@@ -31,14 +31,18 @@ const columns: ColumnDef<FeePayment>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: ({ row }) => {
+    cell: ({ row }:{
+      row:any
+    }) => {
       return <span>${row.getValue("amount")}</span>
     },
   },
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => {
+    cell: ({ row }:{
+      row:any
+    }) => {
       const status = row.getValue("status") as string
       return (
         <Badge
@@ -63,7 +67,9 @@ const columns: ColumnDef<FeePayment>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({ row }:{
+      row:any
+    }) => {
       const status = row.getValue("status") as string
       const receiptId = row.original.receiptId
 

@@ -22,18 +22,23 @@ export default function LoginForm({
   const [loginUser, loginData, loading, error1, reset] = useRequestHook(
     api.AUTH.LOGIN,
     "POST",
-    null
+    null,
+    false,
+    loginType === "superadmin" ? false : true
   );
 
   // Check if email indicates superadmin login
-  const isSuperadmin = loginType === "superadmin" || email.includes("@superadmin") || email.includes("admin@");
+  const isSuperadmin =
+    loginType === "superadmin" ||
+    email.includes("@superadmin") ||
+    email.includes("admin@");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
 
     // Prepare payload based on login type
-    const payload = isSuperadmin 
+    const payload = isSuperadmin
       ? { email, password } // No domain for superadmin
       : { email, password, domainName1 }; // Include domain for regular users
 
@@ -94,13 +99,14 @@ export default function LoginForm({
       >
         <div className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-2xl font-bold">
-            {loginType === "superadmin" ? "Super Admin Login" : "Login to your account"}
+            {loginType === "superadmin"
+              ? "Super Admin Login"
+              : "Login to your account"}
           </h1>
           <p className="text-muted-foreground text-sm text-balance">
-            {loginType === "superadmin" 
+            {loginType === "superadmin"
               ? "Enter your super admin credentials to access the system"
-              : "Enter your email below to login to your account"
-            }
+              : "Enter your email below to login to your account"}
           </p>
         </div>
 
@@ -131,8 +137,12 @@ export default function LoginForm({
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              type={loginType==="superadmin"?'text':'email'}
-              placeholder={loginType === "superadmin" ? "admin@example.com" : "m@example.com"}
+              type={loginType === "superadmin" ? "text" : "email"}
+              placeholder={
+                loginType === "superadmin"
+                  ? "admin@example.com"
+                  : "m@example.com"
+              }
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}

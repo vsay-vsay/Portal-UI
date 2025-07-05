@@ -153,7 +153,9 @@ const columns = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => {
+    cell: ({ row }:{
+      row:any
+    }) => {
       const status = row.getValue("status")
       return (
         <div className="flex items-center">
@@ -165,7 +167,9 @@ const columns = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({ row }:{
+      row:any
+    }) => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

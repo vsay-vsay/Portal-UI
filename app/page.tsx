@@ -35,9 +35,9 @@ export default function LoginPage() {
       </div>
       <div className="bg-muted relative hidden lg:block">
         <img
-          src={loginImage || "/placeholder.jpg"}
+          src={loginImage || "/placeholder.svg"}
           alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="absolute inset-0 h-full w-full object-cover "
         />
       </div>
     </div>

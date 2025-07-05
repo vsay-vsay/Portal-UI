@@ -367,20 +367,69 @@ const HeaderActions = ({
 );
 
 // Custom hook for announcement management
+// Custom hook for announcement management
 const useAnnouncements = () => {
   const { toast } = useToast();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [isRefreshing, setIsRefreshing]=useState<boolean>(false)
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
  
-  const [getAnnouncements, announcementsData, isLoading, error, reset, status ]=useRequestHook(api.ANNOUNCEMENTS.ALL, "GET", null);
+  const [getAnnouncements, announcementsData, isLoading, error, reset, status] = useRequestHook(
+    api.ANNOUNCEMENTS.ALL, 
+    "GET", 
+    null
+  );
+
+  // Effect to handle API response
+  useEffect(() => {
+    if (announcementsData && status === 200) {
+      // Transform the API response to match your Announcement interface
+      const transformedAnnouncements = announcementsData.data?.map((item: any) => ({
+        ...item,
+        timestamp: new Date(item.timestamp),
+        expiryDate: item.expiryDate ? new Date(item.expiryDate) : undefined,
+      })) || [];
+      
+      setAnnouncements(transformedAnnouncements);
+      setIsRefreshing(false);
+    }
+  }, [announcementsData, status]);
+
+  // Effect to handle errors
+  useEffect(() => {
+    if (error) {
+      console.error('Failed to fetch announcements:', error);
+      // Fallback to mock data in development
+      if (process.env.NODE_ENV === 'development') {
+        setAnnouncements(getMockData());
+      }
+      setIsRefreshing(false);
+      
+      toast({
+        title: "Error",
+        description: "Failed to load announcements. Using fallback data.",
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
 
   const fetchAnnouncements = useCallback(async (showRefreshLoader = false) => {
-    getAnnouncements()
-  }, [toast]);
+    if (showRefreshLoader) {
+      setIsRefreshing(true);
+    }
+    
+    try {
+      await getAnnouncements();
+    } catch (err) {
+      console.error('Error fetching announcements:', err);
+      setIsRefreshing(false);
+    }
+  }, [getAnnouncements]);
 
   const handleDeleteAnnouncement = async (id: string) => {
     try {
       const originalAnnouncements = [...announcements];
+      
+      // Optimistically update UI
       setAnnouncements(prev => prev.filter(a => a.id !== id));
 
       await deleteAnnouncement(id);
@@ -390,6 +439,7 @@ const useAnnouncements = () => {
         description: "Announcement deleted successfully",
       });
     } catch (error) {
+      // Revert on error
       setAnnouncements(announcements);
       
       toast({
@@ -403,6 +453,8 @@ const useAnnouncements = () => {
   const handlePinToggle = async (id: string, isPinned: boolean) => {
     try {
       const originalAnnouncements = [...announcements];
+      
+      // Optimistically update UI
       setAnnouncements(prev =>
         prev.map(a => (a.id === id ? { ...a, isPinned } : a))
       );
@@ -414,6 +466,7 @@ const useAnnouncements = () => {
         description: `Announcement ${isPinned ? 'pinned' : 'unpinned'} successfully`,
       });
     } catch (error) {
+      // Revert on error
       setAnnouncements(originalAnnouncements);
       
       toast({

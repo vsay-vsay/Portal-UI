@@ -41,10 +41,10 @@ export function SubscriptionManagement() {
   
   // API hooks
   const [getSubscriptionStatus, statusResult, isGettingStatus, statusError, statusReset, statusStatus] = 
-    useRequestHook(api.PAYMENT.GET_SUBSCRIPTION_STATUS, "GET", null, true, false)
+    useRequestHook(api.PAYMENT.GET_SUBSCRIPTION_STATUS, "GET", null, true, false);
   
   const [toggleSubscription, toggleResult, isToggling, toggleError, toggleReset, toggleStatus] = 
-    useRequestHook(api.SUPER_ADMIN.TOGGLE_SUBSCRIPTION, "POST", null, true, false)
+    useRequestHook(api.SUPER_ADMIN.TOGGLE_SUBSCRIPTION, "POST", null, true, false);
 
   // Form states
   const [statusForm, setStatusForm] = useState<GetStatusData>({

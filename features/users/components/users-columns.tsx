@@ -28,7 +28,7 @@ export const columns: ColumnDef<User>[] = [
         'bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted'
       ),
     },
-    cell: ({ row }) => (
+    cell: ({ row }:{row:any}) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -44,7 +44,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Username' />
     ),
-    cell: ({ row }) => (
+    cell: ({ row }:{row:any}) => (
       <LongText className='max-w-36'>{row.getValue('username')}</LongText>
     ),
     meta: {
@@ -61,7 +61,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Name' />
     ),
-    cell: ({ row }) => {
+    cell: ({ row }:{row:any}) => {
       const { firstName, lastName } = row.original
       const fullName = `${firstName} ${lastName}`
       return <LongText className='max-w-36'>{fullName}</LongText>
@@ -73,7 +73,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Email' />
     ),
-    cell: ({ row }) => (
+    cell: ({ row }:{row:any}) => (
       <div className='w-fit text-nowrap'>{row.getValue('email')}</div>
     ),
   },
@@ -82,7 +82,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Phone Number' />
     ),
-    cell: ({ row }) => <div>{row.getValue('phoneNumber')}</div>,
+    cell: ({ row }:{row:any}) => <div>{row.getValue('phoneNumber')}</div>,
     enableSorting: false,
   },
   {
@@ -90,7 +90,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
-    cell: ({ row }) => {
+    cell: ({ row }:{row:any}) => {
       const { status } = row.original
       const badgeColor = callTypes.get(status)
       return (
@@ -112,7 +112,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Role' />
     ),
-    cell: ({ row }) => {
+    cell: ({ row }:{row:any}) => {
       const { role } = row.original
       const userType = userTypes.find(({ value }) => value === role)
 

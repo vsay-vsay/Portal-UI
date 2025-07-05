@@ -87,7 +87,7 @@ export function DomainManagement() {
     errorUpdate,
     updateReset,
     statusUpdate,
-  ] = useRequestHook(api.SUPER_ADMIN.UPDATE_DOMAIN, "PUT", null); // Fixed: Use UPDATE_DOMAIN endpoint
+  ] = useRequestHook(api.SUPER_ADMIN.UPDATE_DOMAIN, "PUT", null, true, false); // Fixed: Use UPDATE_DOMAIN endpoint
 
   // State management
   const [createForm, setCreateForm] = useState<CreateFormData>({

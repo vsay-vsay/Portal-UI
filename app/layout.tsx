@@ -117,7 +117,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
-          themes={["light", "dark", "blue", "green", "purple"]}
+          disableTransitionOnChange
         >
           <AuthProvider>
             <ReduxProvider>{children}</ReduxProvider>

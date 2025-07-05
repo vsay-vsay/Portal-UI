@@ -137,7 +137,9 @@ export function InventoryTable() {
           aria-label="Select all"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }:{
+        row:any
+      }) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -150,7 +152,9 @@ export function InventoryTable() {
     {
       accessorKey: "id",
       header: "Product ID",
-      cell: ({ row }) => <div className="font-medium">{row.getValue("id")}</div>,
+      cell: ({ row }:{
+        row:any
+      }) => <div className="font-medium">{row.getValue("id")}</div>,
     },
     {
       accessorKey: "name",
@@ -162,17 +166,23 @@ export function InventoryTable() {
           </Button>
         )
       },
-      cell: ({ row }) => <div>{row.getValue("name")}</div>,
+      cell: ({ row }:{
+        row:any
+      }) => <div>{row.getValue("name")}</div>,
     },
     {
       accessorKey: "category",
       header: "Category",
-      cell: ({ row }) => <div>{row.getValue("category")}</div>,
+      cell: ({ row }:{
+        row:any
+      }) => <div>{row.getValue("category")}</div>,
     },
     {
       accessorKey: "price",
       header: () => <div className="text-right">Price</div>,
-      cell: ({ row }) => {
+      cell: ({ row }:{
+        row:any
+      }) => {
         const amount = Number.parseFloat(row.getValue("price"))
         const formatted = new Intl.NumberFormat("en-US", {
           style: "currency",
@@ -185,14 +195,18 @@ export function InventoryTable() {
     {
       accessorKey: "stock",
       header: () => <div className="text-right">Stock</div>,
-      cell: ({ row }) => {
+      cell: ({ row }:{
+        row:any
+      }) => {
         return <div className="text-right">{row.getValue("stock")}</div>
       },
     },
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => {
+      cell: ({ row }:{
+        row:any
+      }) => {
         const status = row.getValue("status") as string
         return (
           <Badge variant={status === "In Stock" ? "default" : status === "Low Stock" ? "outline" : "destructive"}>
@@ -204,7 +218,9 @@ export function InventoryTable() {
     {
       id: "actions",
       enableHiding: false,
-      cell: ({ row }) => {
+      cell: ({ row }:{
+        row:any
+      }) => {
         const product = row.original
 
         return (

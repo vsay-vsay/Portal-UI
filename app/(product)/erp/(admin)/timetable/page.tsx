@@ -339,7 +339,7 @@ const ERPTimetableMolecule = () => {
           )}
           {error && (
             <div className="text-center py-4 text-red-500">
-              Error loading timetable: {error.message}
+              Error loading timetable: {error}
             </div>
           )}
 

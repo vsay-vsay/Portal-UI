@@ -166,7 +166,7 @@ export default function UserManagementPage() {
     },
     {
       header: "Actions",
-      cell: ({ row }: { row }) => (
+      cell: ({ row }: { row:any }) => (
         <div className="flex items-center gap-2">
           {/* <Button variant="ghost" size="icon">
             <Eye className="h-4 w-4" />
@@ -273,8 +273,8 @@ export default function UserManagementPage() {
         actions={
           <div className="flex items-center gap-2">
             <DialogeWrapper
-              open={open}
-              setOpen={setOpen}
+              // open={open}
+              // setOpen={setOpen}
               title="Add New User"
               description="Create a new user account with role and permissions"
               TriggerButton={
