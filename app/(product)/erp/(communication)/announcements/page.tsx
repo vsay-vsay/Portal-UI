@@ -17,6 +17,8 @@ import { Search, Megaphone, Plus, Loader2, RefreshCw, AlertCircle } from "lucide
 import { PageHeader } from "@/components/page-header";
 import { AnnouncementCard } from "@/components/erp/communication/announcement-card";
 import { useToast } from "@/hooks/use-toast";
+import useRequestHook from "@/hooks/requestHook";
+import api from "@/utils/api";
 
 // API configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000/api";
@@ -49,31 +51,7 @@ interface Announcement {
 }
 
 // API Service Functions
-const getAnnouncements = async (): Promise<Announcement[]> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/announcements`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    
-    return data.map((item: any) => ({
-      ...item,
-      timestamp: new Date(item.timestamp),
-      expiryDate: item.expiryDate ? new Date(item.expiryDate) : undefined,
-    }));
-  } catch (error) {
-    console.error('Failed to fetch announcements:', error);
-    throw error;
-  }
-};
 
 const createAnnouncement = async (announcement: Omit<Announcement, 'id'>): Promise<Announcement> => {
   try {
@@ -392,46 +370,11 @@ const HeaderActions = ({
 const useAnnouncements = () => {
   const { toast } = useToast();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+ 
+  const [getAnnouncements, announcementsData, isLoading, error, reset, status ]=useRequestHook(api.ANNOUNCEMENTS.ALL, "GET", null);
 
   const fetchAnnouncements = useCallback(async (showRefreshLoader = false) => {
-    try {
-      if (showRefreshLoader) {
-        setIsRefreshing(true);
-      } else {
-        setIsLoading(true);
-      }
-      setError(null);
-
-      const data = await getAnnouncements();
-      setAnnouncements(data);
-      
-      if (showRefreshLoader) {
-        toast({
-          title: "Success",
-          description: "Announcements refreshed successfully",
-        });
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to fetch announcements";
-      setError(errorMessage);
-      
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-      });
-
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('Using fallback mock data');
-        setAnnouncements(getMockData());
-      }
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
+    getAnnouncements()
   }, [toast]);
 
   const handleDeleteAnnouncement = async (id: string) => {
