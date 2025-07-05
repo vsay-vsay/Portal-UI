@@ -18,7 +18,7 @@ const useRequestHook = (
   const [error, setError] = useState<string | null>(null);
   const [statusCode, setStatusCode] = useState<number | null>(null);
 
-  const fetchData = async (customData: any = initialData, urlParameter=null) => {
+  const fetchData = async (customData: any = initialData, urlParameter:string="") => {
     setLoading(true);
     setError(null);
     setStatusCode(null);

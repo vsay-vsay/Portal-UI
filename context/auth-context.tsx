@@ -286,13 +286,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("Successfully initialized user with products:", products);
         
       } else {
-        console.log("Missing required auth data, redirecting...");
-        if (selectedDomain) {
-          setDomainName(selectedDomain);
-          router.replace("/");
-        } else {
-          router.replace("/select-org");
+        if(role==="SuperAdmin"){
+          redirectUser(role, "")
+
+        }else{
+          console.log("Missing required auth data, redirecting...");
+          if (selectedDomain) {
+            setDomainName(selectedDomain);
+            router.replace("/");
+          } else {
+            router.replace("/select-org");
+          }
         }
+       
       }
     } catch (error) {
       console.error("Error initializing auth state:", error);

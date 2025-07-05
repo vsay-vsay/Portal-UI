@@ -131,7 +131,7 @@ export default function LoginForm({
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              type="email"
+              type={loginType==="superadmin"?'text':'email'}
               placeholder={loginType === "superadmin" ? "admin@example.com" : "m@example.com"}
               required
               value={email}
