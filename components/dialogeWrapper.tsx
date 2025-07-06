@@ -16,14 +16,16 @@ function DialogeWrapper({
   description,
   children,
   footer,
-  // setOpen,
-  // open,
-}: {
+  width = "525",
+}: // setOpen,
+// open,
+{
   TriggerButton: React.ReactNode;
   title?: string;
   description?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  width: string;
   // setOpen: (open: boolean) => void;
   // open?: boolean;
 }) {
@@ -32,7 +34,12 @@ function DialogeWrapper({
       <DialogTrigger asChild onClick={(e) => e.stopPropagation()}>
         {TriggerButton}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent
+        style={{
+          width: width + "px",
+        }}
+        className={`max-w-5xl max-h-[80vh] overflow-auto`}
+      >
         <DialogHeader>
           {title && <DialogTitle>{title}</DialogTitle>}
           {description && <DialogDescription>{description}</DialogDescription>}

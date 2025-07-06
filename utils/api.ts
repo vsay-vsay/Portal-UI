@@ -52,8 +52,10 @@ const api = {
 
   // Announcements
   ANNOUNCEMENTS: {
-    CREATE: `${BASE}/announcements/create-announcement`,
-    ALL: `${BASE}/announcements/all-announcement`,
+    CREATE: `${BASE}/announcements`,
+    ALL: `${BASE}/announcements`,
+    PIN: (id: string) => `${BASE}/announcements/${id}/pin`,
+    REACTION:(id:string)=>`${BASE}/announcements/${id}/reaction`,
     BY_ID: (id: string) => `${BASE}/announcements/${id}`,
     DELETE: (id: string) => `${BASE}/announcements/${id}`,
     UPDATE: (id: string) => `${BASE}/announcements/${id}`,

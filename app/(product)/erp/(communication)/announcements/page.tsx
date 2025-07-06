@@ -13,12 +13,21 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Search, Megaphone, Plus, Loader2, RefreshCw, AlertCircle } from "lucide-react";
+import {
+  Search,
+  Megaphone,
+  Plus,
+  Loader2,
+  RefreshCw,
+  AlertCircle,
+} from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { AnnouncementCard } from "@/components/erp/communication/announcement-card";
 import { useToast } from "@/hooks/use-toast";
 import useRequestHook from "@/hooks/requestHook";
 import api from "@/utils/api";
+import DialogeWrapper from "@/components/dialogeWrapper";
+import UpdateCreateAnnouncementForm from "@/components/erp/communication/announcementCreateUpdateForm";
 
 // API configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000/api";
@@ -52,39 +61,15 @@ interface Announcement {
 
 // API Service Functions
 
-
-const createAnnouncement = async (announcement: Omit<Announcement, 'id'>): Promise<Announcement> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/announcements`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(announcement),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return {
-      ...data,
-      timestamp: new Date(data.timestamp),
-      expiryDate: data.expiryDate ? new Date(data.expiryDate) : undefined,
-    };
-  } catch (error) {
-    console.error('Failed to create announcement:', error);
-    throw error;
-  }
-};
-
-const updateAnnouncement = async (id: string, announcement: Partial<Announcement>): Promise<Announcement> => {
+const updateAnnouncement = async (
+  id: string,
+  announcement: Partial<Announcement>
+): Promise<Announcement> => {
   try {
     const response = await fetch(`${API_BASE_URL}/announcements/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(announcement),
     });
@@ -100,7 +85,7 @@ const updateAnnouncement = async (id: string, announcement: Partial<Announcement
       expiryDate: data.expiryDate ? new Date(data.expiryDate) : undefined,
     };
   } catch (error) {
-    console.error('Failed to update announcement:', error);
+    console.error("Failed to update announcement:", error);
     throw error;
   }
 };
@@ -108,9 +93,9 @@ const updateAnnouncement = async (id: string, announcement: Partial<Announcement
 const deleteAnnouncement = async (id: string): Promise<void> => {
   try {
     const response = await fetch(`${API_BASE_URL}/announcements/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -118,7 +103,7 @@ const deleteAnnouncement = async (id: string): Promise<void> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
   } catch (error) {
-    console.error('Failed to delete announcement:', error);
+    console.error("Failed to delete announcement:", error);
     throw error;
   }
 };
@@ -126,9 +111,9 @@ const deleteAnnouncement = async (id: string): Promise<void> => {
 const togglePin = async (id: string, isPinned: boolean): Promise<void> => {
   try {
     const response = await fetch(`${API_BASE_URL}/announcements/${id}/pin`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ isPinned }),
     });
@@ -137,7 +122,7 @@ const togglePin = async (id: string, isPinned: boolean): Promise<void> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
   } catch (error) {
-    console.error('Failed to toggle pin:', error);
+    console.error("Failed to toggle pin:", error);
     throw error;
   }
 };
@@ -147,7 +132,8 @@ const getMockData = (): Announcement[] => [
   {
     id: "1",
     title: "Important: Exam Schedule Update",
-    content: "The mid-term examinations have been rescheduled. Please check the updated timetable on the student portal.",
+    content:
+      "The mid-term examinations have been rescheduled. Please check the updated timetable on the student portal.",
     author: {
       name: "Dr. Michael Roberts",
       avatar: "/avatars/principal.jpg",
@@ -157,11 +143,13 @@ const getMockData = (): Announcement[] => [
     priority: "urgent",
     category: "Academic",
     targetAudience: ["All Students", "Teachers"],
-    attachments: [{
-      id: "att-1",
-      name: "updated-exam-schedule.pdf",
-      type: "PDF",
-    }],
+    attachments: [
+      {
+        id: "att-1",
+        name: "updated-exam-schedule.pdf",
+        type: "PDF",
+      },
+    ],
     reactions: { likes: 45, comments: 12 },
     isPinned: true,
     expiryDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
@@ -169,7 +157,8 @@ const getMockData = (): Announcement[] => [
   {
     id: "2",
     title: "School Sports Day Registration",
-    content: "Registration for the annual sports day is now open. Please submit your forms by the end of this week.",
+    content:
+      "Registration for the annual sports day is now open. Please submit your forms by the end of this week.",
     author: {
       name: "Ms. Sarah Johnson",
       avatar: "/avatars/sports-coordinator.jpg",
@@ -185,7 +174,8 @@ const getMockData = (): Announcement[] => [
   {
     id: "3",
     title: "Library New Book Collection",
-    content: "We've added 200 new books to our library collection. Check out the latest additions in science and literature.",
+    content:
+      "We've added 200 new books to our library collection. Check out the latest additions in science and literature.",
     author: {
       name: "Mr. David Wilson",
       avatar: "/avatars/librarian.jpg",
@@ -201,15 +191,15 @@ const getMockData = (): Announcement[] => [
 ];
 
 // Filter Component
-const AnnouncementFilters = ({ 
-  searchQuery, 
-  setSearchQuery, 
-  selectedCategory, 
-  setSelectedCategory, 
-  selectedPriority, 
+const AnnouncementFilters = ({
+  searchQuery,
+  setSearchQuery,
+  selectedCategory,
+  setSelectedCategory,
+  selectedPriority,
   setSelectedPriority,
   categories,
-  priorities 
+  priorities,
 }: {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -269,7 +259,9 @@ const LoadingState = () => (
     />
     <div className="flex justify-center items-center py-12">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      <span className="ml-2 text-muted-foreground">Loading announcements...</span>
+      <span className="ml-2 text-muted-foreground">
+        Loading announcements...
+      </span>
     </div>
   </div>
 );
@@ -279,16 +271,17 @@ const ErrorAlert = ({ error }: { error: string }) => (
   <Alert variant="destructive">
     <AlertCircle className="h-4 w-4" />
     <AlertDescription>
-      {error}. {process.env.NODE_ENV === 'development' && 'Using fallback data.'}
+      {error}.{" "}
+      {process.env.NODE_ENV === "development" && "Using fallback data."}
     </AlertDescription>
   </Alert>
 );
 
 // Empty State Component
-const EmptyState = ({ 
-  searchQuery, 
-  selectedCategory, 
-  selectedPriority 
+const EmptyState = ({
+  searchQuery,
+  selectedCategory,
+  selectedPriority,
 }: {
   searchQuery: string;
   selectedCategory: string;
@@ -301,38 +294,33 @@ const EmptyState = ({
       {searchQuery || selectedCategory !== "all" || selectedPriority !== "all"
         ? "Try adjusting your filters"
         : "Create your first announcement to get started"}
-    |</p>
+      |
+    </p>
   </div>
 );
 
 // Announcement List Component
-const AnnouncementList = ({ 
-  announcements, 
-  title, 
-  onEdit, 
-  onDelete, 
-  onPinToggle 
+const AnnouncementList = ({
+  announcements,
+  title,
+  OnRefresh,
 }: {
   announcements: Announcement[];
   title: string;
-  onEdit: (announcement: Announcement) => void;
-  onDelete: (id: string) => void;
-  onPinToggle: (id: string, isPinned: boolean) => void;
+  OnRefresh: () => void;
 }) => (
   <div className="space-y-4">
     <h3 className="text-lg font-semibold flex items-center gap-2">
       {title}
-      <Badge variant="secondary">{announcements.length}</Badge>
+      <Badge variant="secondary">{announcements?.length}</Badge>
     </h3>
     <div className="grid gap-4">
-      {announcements?.map((announcement) => (
+      {announcements?.map((announcement, index) => (
         <AnnouncementCard
-          key={announcement.id}
+          key={announcement?.id || index}
           announcement={announcement}
           isAdmin={true}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onPinToggle={onPinToggle}
+          onRefresh={OnRefresh}
         />
       ))}
     </div>
@@ -340,13 +328,11 @@ const AnnouncementList = ({
 );
 
 // Header Actions Component
-const HeaderActions = ({ 
- onRefresh, 
-  onCreateNew, 
-  isRefreshing 
+const HeaderActions = ({
+  onRefresh,
+  isRefreshing,
 }: {
   onRefresh: () => void;
-  onCreateNew: () => void;
   isRefreshing: boolean;
 }) => (
   <div className="flex gap-2">
@@ -356,13 +342,24 @@ const HeaderActions = ({
       onClick={onRefresh}
       disabled={isRefreshing}
     >
-      <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+      <RefreshCw
+        className={`mr-2 h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+      />
       Refresh
     </Button>
-    <Button onClick={onCreateNew}>
-      <Plus className="mr-2 h-4 w-4" />
-      New Announcement
-    </Button>
+    <DialogeWrapper
+      // open={open}
+      // setOpen={setOpen}
+      width="700"
+      title="Add New Announcement"
+      description="Create a new Announcement with all details"
+      TriggerButton={<Button type="button">Create Announcement</Button>}
+    >
+      <UpdateCreateAnnouncementForm
+        endpoint={api.ANNOUNCEMENTS.CREATE}
+        onSuccess={onRefresh}
+      />
+    </DialogeWrapper>
   </div>
 );
 
@@ -372,23 +369,21 @@ const useAnnouncements = () => {
   const { toast } = useToast();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
- 
-  const [getAnnouncements, announcementsData, isLoading, error, reset, status] = useRequestHook(
-    api.ANNOUNCEMENTS.ALL, 
-    "GET", 
-    null
-  );
+
+  const [getAnnouncements, announcementsData, isLoading, error, reset, status] =
+    useRequestHook(api.ANNOUNCEMENTS.ALL, "GET", null);
 
   // Effect to handle API response
   useEffect(() => {
     if (announcementsData && status === 200) {
       // Transform the API response to match your Announcement interface
-      const transformedAnnouncements = announcementsData.data?.map((item: any) => ({
-        ...item,
-        timestamp: new Date(item.timestamp),
-        expiryDate: item.expiryDate ? new Date(item.expiryDate) : undefined,
-      })) || [];
-      
+      const transformedAnnouncements =
+        announcementsData.data?.map((item: any) => ({
+          ...item,
+          timestamp: new Date(item.timestamp),
+          expiryDate: item.expiryDate ? new Date(item.expiryDate) : undefined,
+        })) || [];
+
       setAnnouncements(transformedAnnouncements);
       setIsRefreshing(false);
     }
@@ -397,13 +392,13 @@ const useAnnouncements = () => {
   // Effect to handle errors
   useEffect(() => {
     if (error) {
-      console.error('Failed to fetch announcements:', error);
+      console.error("Failed to fetch announcements:", error);
       // Fallback to mock data in development
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === "development") {
         setAnnouncements(getMockData());
       }
       setIsRefreshing(false);
-      
+
       toast({
         title: "Error",
         description: "Failed to load announcements. Using fallback data.",
@@ -416,24 +411,24 @@ const useAnnouncements = () => {
     if (showRefreshLoader) {
       setIsRefreshing(true);
     }
-    
+
     try {
       await getAnnouncements();
     } catch (err) {
-      console.error('Error fetching announcements:', err);
+      console.error("Error fetching announcements:", err);
       setIsRefreshing(false);
     }
-  }, [getAnnouncements]);
+  }, []);
 
   const handleDeleteAnnouncement = async (id: string) => {
     try {
       const originalAnnouncements = [...announcements];
-      
+
       // Optimistically update UI
-      setAnnouncements(prev => prev.filter(a => a.id !== id));
+      setAnnouncements((prev) => prev.filter((a) => a.id !== id));
 
       await deleteAnnouncement(id);
-      
+
       toast({
         title: "Success",
         description: "Announcement deleted successfully",
@@ -441,7 +436,7 @@ const useAnnouncements = () => {
     } catch (error) {
       // Revert on error
       setAnnouncements(announcements);
-      
+
       toast({
         title: "Error",
         description: "Failed to delete announcement",
@@ -453,22 +448,24 @@ const useAnnouncements = () => {
   const handlePinToggle = async (id: string, isPinned: boolean) => {
     try {
       const originalAnnouncements = [...announcements];
-      
+
       // Optimistically update UI
-      setAnnouncements(prev =>
-        prev.map(a => (a.id === id ? { ...a, isPinned } : a))
+      setAnnouncements((prev) =>
+        prev.map((a) => (a.id === id ? { ...a, isPinned } : a))
       );
 
       await togglePin(id, isPinned);
-      
+
       toast({
         title: "Success",
-        description: `Announcement ${isPinned ? 'pinned' : 'unpinned'} successfully`,
+        description: `Announcement ${
+          isPinned ? "pinned" : "unpinned"
+        } successfully`,
       });
     } catch (error) {
       // Revert on error
       setAnnouncements(originalAnnouncements);
-      
+
       toast({
         title: "Error",
         description: "Failed to update announcement",
@@ -504,7 +501,9 @@ export default function AdminAnnouncementsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPriority, setSelectedPriority] = useState("all");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedAnnouncement, setSelectedAnnouncement] = useState<Announcement | undefined>(undefined);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState<
+    Announcement | undefined
+  >(undefined);
 
   useEffect(() => {
     fetchAnnouncements();
@@ -537,10 +536,13 @@ export default function AdminAnnouncementsPage() {
     return matchesSearch && matchesCategory && matchesPriority;
   });
 
-  const pinnedAnnouncements = filteredAnnouncements.filter(a => a.isPinned);
-  const regularAnnouncements = filteredAnnouncements.filter(a => !a.isPinned);
+  const pinnedAnnouncements = filteredAnnouncements.filter((a) => a.isPinned);
+  const regularAnnouncements = filteredAnnouncements.filter((a) => !a.isPinned);
 
-  const categories = ["all", ...Array.from(new Set(announcements.map(a => a.category)))];
+  const categories = [
+    "all",
+    ...Array.from(new Set(announcements.map((a) => a.category))),
+  ];
   const priorities = ["all", "low", "medium", "high", "urgent"];
 
   if (isLoading) {
@@ -593,27 +595,23 @@ export default function AdminAnnouncementsPage() {
         </TabsList>
 
         <TabsContent value="all" className="space-y-6">
-          {pinnedAnnouncements.length > 0 && (
+          {pinnedAnnouncements?.length > 0 && (
             <AnnouncementList
               announcements={pinnedAnnouncements}
               title="Pinned Announcements"
-              onEdit={handleEditAnnouncement}
-              onDelete={handleDeleteAnnouncement}
-              onPinToggle={handlePinToggle}
+              OnRefresh={handleRefresh}
             />
           )}
 
-          {regularAnnouncements.length > 0 && (
+          {regularAnnouncements?.length > 0 && (
             <AnnouncementList
               announcements={regularAnnouncements}
               title="Regular Announcements"
-              onEdit={handleEditAnnouncement}
-              onDelete={handleDeleteAnnouncement}
-              onPinToggle={handlePinToggle}
+              OnRefresh={handleRefresh}
             />
           )}
 
-          {filteredAnnouncements.length === 0 && (
+          {filteredAnnouncements?.length === 0 && (
             <EmptyState
               searchQuery={searchQuery}
               selectedCategory={selectedCategory}
@@ -623,16 +621,14 @@ export default function AdminAnnouncementsPage() {
         </TabsContent>
 
         <TabsContent value="pinned" className="space-y-4">
-          {pinnedAnnouncements.length > 0 ? (
+          {pinnedAnnouncements?.length > 0 ? (
             <div className="grid gap-4">
-              {pinnedAnnouncements.map((announcement) => (
+              {pinnedAnnouncements.map((announcement, index) => (
                 <AnnouncementCard
-                  key={announcement.id}
+                  key={announcement?.id || index}
                   announcement={announcement}
                   isAdmin={true}
-                  onEdit={handleEditAnnouncement}
-                  onDelete={handleDeleteAnnouncement}
-                  onPinToggle={handlePinToggle}
+                  onRefresh={handleRefresh}
                 />
               ))}
             </div>
@@ -647,16 +643,14 @@ export default function AdminAnnouncementsPage() {
           {regularAnnouncements.length > 0 ? (
             <div className="grid gap-4">
               {regularAnnouncements
-                .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+                .sort((a, b) => b?.timestamp.getTime() - a?.timestamp.getTime())
                 .slice(0, 5)
-                .map((announcement) => (
+                .map((announcement, index) => (
                   <AnnouncementCard
-                    key={announcement.id}
+                    key={announcement?.id || index}
                     announcement={announcement}
                     isAdmin={true}
-                    onEdit={handleEditAnnouncement}
-                    onDelete={handleDeleteAnnouncement}
-                    onPinToggle={handlePinToggle}
+                    onRefresh={handleRefresh}
                   />
                 ))}
             </div>

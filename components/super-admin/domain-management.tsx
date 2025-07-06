@@ -234,7 +234,7 @@ export function DomainManagement() {
 
     try {
       const updateData = {
-        domainName: domainInfo.domainName, // Include domain name for identification
+        domainName: domainInfo.domainName || searchDomain, // Include domain name for identification
         companyName: updateForm.companyName,
         maxAdmins: Number.parseInt(updateForm.maxAdmins),
         maxTeachers: Number.parseInt(updateForm.maxTeachers),
