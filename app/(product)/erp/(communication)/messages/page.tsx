@@ -1,5 +1,5 @@
 
-import { MessageComposer } from "@/components/erp/communication/messages/message-composer"
+import  MessageComposer  from "@/components/erp/communication/messages/message-composer"
 import { MessageDetail } from "@/components/erp/communication/messages/message-detail"
 import { MessageList } from "@/components/erp/communication/messages/message-list"
 import { Card } from "@/components/ui/card"
@@ -14,7 +14,7 @@ export default function MessagesPage() {
         <Card className="md:col-span-3 h-full overflow-hidden flex flex-col">
           <MessageList />
         </Card>
-        <Card className="md:col-span-9 h-full overflow-hidden flex flex-col">
+        <Card className="md:col-span-9 h-full  overflow-hidden flex flex-col">
           <MessageDetail />
           <MessageComposer />
         </Card>

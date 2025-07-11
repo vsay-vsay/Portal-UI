@@ -104,7 +104,7 @@ export function MessageDetail() {
   }, [])
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center gap-3">
           <Avatar>
@@ -131,8 +131,8 @@ export function MessageDetail() {
           </Button>
         </div>
       </div>
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
+      <ScrollArea >
+        <div className="space-y-4 p-4">
           {loading ? (
             <div className="flex justify-center p-4">
               <p className="text-sm text-muted-foreground">Loading messages...</p>
@@ -168,6 +168,6 @@ export function MessageDetail() {
           )}
         </div>
       </ScrollArea>
-    </div>
+    </>
   )
 }

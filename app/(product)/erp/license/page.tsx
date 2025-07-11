@@ -13,9 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
+// import { Switch } from "@/components/ui/switch";
+// import { Tabs, TabsContent } from "@/components/ui/tabs";
+// import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
